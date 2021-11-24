@@ -174,8 +174,18 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#data-set">
-   Data set
+  <a class="reference internal nav-link" href="#correlation-plot-of-the-dataset">
+   Correlation plot of the dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distribution-of-the-numerical-variables">
+   Distribution of the numerical variables
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#target-distribution">
+   Target distribution
   </a>
  </li>
 </ul>
@@ -191,23 +201,16 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="data-analysis">
 <h1>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="data-set">
-<h2>Data set<a class="headerlink" href="#data-set" title="Permalink to this headline">¶</a></h2>
-<p>The dataset used in our analysis was obtained from the <a class="reference external" href="https://archive-beta.ics.uci.edu/">UC Irvine Machine Learning Repository</a>, a popular website with hundreds of datasets available for analysis. The creators of the dataset are C. Sakar and Yomi Kastro, and the original dataset can be obtained at this <a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/online+shoppers+purchasing+intention+dataset">link</a>.</p>
-<p>Each row in the dataset contains a feature vector that contains data corresponding to a visit “session” (period of time spent) of a user on an e-commerce website. The dataset was specifically formed so that each session would belong to a unique user over a 1-year period. The total number of sessions in the dataset is 12,330.</p>
-<p>Examples of features included in the dataset are:</p>
-<ul class="simple">
-<li><p>Duration (time) spent on Administrative, Informational, or Product related sections of the website.</p></li>
-<li><p>Data from Google Analytics such as bounce rate, exit rate, and page value.</p></li>
-<li><p>What month the session took place it, and whether or not the day of the session falls on a weekend.</p></li>
-<li><p>The operating system and browser used by the website visitor.</p></li>
-</ul>
-<p>The target feature and class label in the dataset is called <code class="docutils literal notranslate"><span class="pre">Revenue</span></code> and contains either a <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> value, which correspond to whether or not the user made a purchase on the website during their visit, respectively. It is worth noting that the dataset is unbalanced, as 85% of the sessions contain a <code class="docutils literal notranslate"><span class="pre">False</span></code> class label, with the remaining 15% containing a <code class="docutils literal notranslate"><span class="pre">True</span></code> label.</p>
-<p>Distribution of the numerical variables:</p>
-<p><img alt="distribution_numerical_vars_plot" src="../../../results/chart_numeric_var_distribution.png" /></p>
-<p>Correlation plot of the dataset:</p>
+<div class="section" id="correlation-plot-of-the-dataset">
+<h2>Correlation plot of the dataset<a class="headerlink" href="#correlation-plot-of-the-dataset" title="Permalink to this headline">¶</a></h2>
 <p><img alt="correlation_plot" src="../../../results/chart_correlation.png" /></p>
-<p>Target distribution:</p>
+</div>
+<div class="section" id="distribution-of-the-numerical-variables">
+<h2>Distribution of the numerical variables<a class="headerlink" href="#distribution-of-the-numerical-variables" title="Permalink to this headline">¶</a></h2>
+<p><img alt="distribution_numerical_vars_plot" src="../../../results/chart_numeric_var_distribution.png" /></p>
+</div>
+<div class="section" id="target-distribution">
+<h2>Target distribution<a class="headerlink" href="#target-distribution" title="Permalink to this headline">¶</a></h2>
 <p><img alt="distribution_target_plot" src="../../../results/chart_target_distribution.png" /></p>
 </div>
 </div>
