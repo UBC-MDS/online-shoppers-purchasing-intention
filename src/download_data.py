@@ -16,6 +16,15 @@ from urllib import request
 opt = docopt(__doc__)
 
 def main(url, out_path):
+    """Main function to download dataset from the internet
+
+    Parameters
+    ----------
+    url : string
+        Direct URL to download dataset
+    out_path : string
+        File path (including filename) of where to locally write the file
+    """    
     try:
         request.urlretrieve(url, out_path)
     except Exception as e:
