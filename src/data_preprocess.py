@@ -142,6 +142,10 @@ def main(input, output, test_size):
     train = feat_engineer(train)
     test = feat_engineer(test)
 
+    # Output pre-transformed data for EDA
+    train.to_csv(output + 'train-eda.csv', index=False)
+    test.to_csv(output + 'test-eda.csv', index=False)
+
     # Transformation
     # TODO: what to do with outliers?
     ct = get_transformer()
