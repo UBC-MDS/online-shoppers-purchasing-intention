@@ -5,12 +5,12 @@
 transforming, and/or paritionting that needs to happen before exploratory data analysis 
 or modeling takes place
 
-Usage: src/data_preprocess.py [--input=<input>] [--output=<output>] [--test_size=<test_size>]
+Usage: src/data_preprocess.py [--input_path=<input_path>] [--output_path=<output_path>] [--test_size=<test_size>]
 
 Options:
---input=<input>          Input file path  [default: data/raw/online_shoppers_intention.csv].
---output=<output>        Folder path (exclude filename) of where to locally write the file [default: data/processed/].
---test_size=<test_size>  Proportion of dataset to be included in test split [default: 0.2].
+--input_path=<input_path>    Input file path  [default: data/raw/online_shoppers_intention.csv].
+--output_path=<output_path>  Folder path (exclude filename) of where to locally write the file [default: data/processed/].
+--test_size=<test_size>      Proportion of dataset to be included in test split [default: 0.2].
 '''
 
 from docopt import docopt
@@ -125,12 +125,11 @@ def get_transformer():
                  
     return ct
 
-
-def main(input, output, test_size):
+def main(input_path, output_path, test_size):
     test_size = float(test_size)
 
     # Read raw data
-    df = read_data(input)
+    df = read_data(input_path)
 
     # Data cleaning
     df = clean_data(df)
@@ -143,8 +142,9 @@ def main(input, output, test_size):
     test = feat_engineer(test)
 
     # Output pre-transformed data for EDA
-    train.to_csv(output + 'train-eda.csv', index=False)
-    test.to_csv(output + 'test-eda.csv', index=False)
+    print('-- Output pre-transformed data for EDA')
+    train.to_csv(output_path + 'train-eda.csv', index=False)
+    test.to_csv(output_path + 'test-eda.csv', index=False)
 
     # Transformation
     # TODO: what to do with outliers?
@@ -160,8 +160,8 @@ def main(input, output, test_size):
 
     # Output
     print('-- Output clean data')
-    train.to_csv(output + 'train.csv', index=False)
-    test.to_csv(output + 'test.csv', index=False)
+    train.to_csv(output_path + 'train.csv', index=False)
+    test.to_csv(output_path + 'test.csv', index=False)
       
 if __name__ == "__main__":
-    main(opt["--input"], opt["--output"], opt["--test_size"])
+    main(opt["--input_path"], opt["--output_path"], opt["--test_size"])
