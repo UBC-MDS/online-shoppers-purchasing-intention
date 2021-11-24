@@ -25,28 +25,36 @@ from sklearn.preprocessing import (
 
 opt = docopt(__doc__)
 
-def read_data(input):
+def read_data(input_path):
     """Reads raw data and return as Pandas dataframe
 
-    Args:
-        input (string): input file path
+    Parameters
+    ----------
+    input_path : string
+        Input file path
 
-    Returns:
-        pandas.DataFrame: input dataframe
-    """
+    Returns
+    -------
+    pandas.DataFrame
+        Input as a pandas dataframe
+    """    
     print('-- Read data..')
-    df = pd.read_csv(input)
+    df = pd.read_csv(input_path)
     return df
 
 def clean_data(df):
     """Perform data cleaning
 
-    Args:
-        df (pandas.DataFrame): input dataframe
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Input dataframe
 
-    Returns:
-        pandas.DataFrame: Cleaned dataframe
-    """    
+    Returns
+    -------
+    pandas.DataFrame
+        Cleaned dataframe
+    """      
     print('-- Clean data')
     # 'Jun' is spelt as 'June' in raw data
     df['Month'] = df['Month'].replace('June', 'Jun')
@@ -61,14 +69,19 @@ def train_test_split(df, test_size):
     of data. Test will always start from the end of the data, in
     chronological order.
 
-    Args:
-        df (pd.DataFrame): Input dataframe
-        test_size (float): Should be between 0.0 and 1.0 and represent the 
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input dataframe
+    test_size : float
+        Should be between 0.0 and 1.0 and represent the 
             proportion of the dataset to include in the test split
 
-    Returns:
-        list: List containing train/test split
-    """    
+    Returns
+    -------
+    list
+        List containing train & test split
+    """       
     print('-- Split data into train/test')
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -86,6 +99,18 @@ def train_test_split(df, test_size):
     return [train, test]
 
 def feat_engineer(df):
+    """Feature engineering - creating new features
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input dataframe
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with new features
+    """    
     print('-- Feature Engineering')
     df['total_page_view'] = df['Administrative'] + df['Informational'] + df['ProductRelated']
     df['total_duration'] = df['Administrative_Duration'] + df['Informational_Duration'] + df['ProductRelated_Duration']
@@ -98,6 +123,7 @@ def feat_engineer(df):
 
     return df
 
+# Dictionary of features type for transformation
 feat_type = {
     'numeric': ['Administrative','Administrative_Duration', 'Informational',
                 'Informational_Duration','ProductRelated','ProductRelated_Duration',
@@ -113,6 +139,13 @@ feat_type = {
 }
 
 def get_transformer():
+    """Get Column Transformer for feature transformation
+
+    Returns
+    -------
+    ColumnTransformer
+        Returns a ColumnTransformer object
+    """    
     print('-- Get Column Transformer')
     
     ct = make_column_transformer(
@@ -126,6 +159,20 @@ def get_transformer():
     return ct
 
 def main(input_path, output_path, test_size):
+    """Main function for data preprocessing. Includes reading of data, data
+    cleaning, train/test split, feature engineering, and feature
+    transformation. Output 2 sets of clean data, one before transformation
+    for EDA, one after transformation for machine learning.
+
+    Parameters
+    ----------
+    input_path : string
+        Input path for input data from docopt
+    output_path : string    
+        Output folder path from docopt
+    test_size : string
+        Test data proportion from docopt
+    """    
     test_size = float(test_size)
 
     # Read raw data
