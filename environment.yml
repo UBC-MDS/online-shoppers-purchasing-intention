@@ -14,3 +14,4 @@ dependencies:
   - altair_saver
   - pip:
     - altair-data-server==0.4.1
+    - jupyter-book
