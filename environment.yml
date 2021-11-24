@@ -10,5 +10,6 @@ dependencies:
   - scipy=1.7.1
   - pip>=20
   - ipykernel
+  - docopt=0.6.2
   - pip:
     - altair-data-server==0.4.1
