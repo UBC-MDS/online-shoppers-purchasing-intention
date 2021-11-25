@@ -12,6 +12,7 @@ dependencies:
   - ipykernel
   - docopt=0.6.2
   - altair_saver
+  - xgboost=1.5.0
   - pip:
     - altair-data-server==0.4.1
     - jupyter-book
