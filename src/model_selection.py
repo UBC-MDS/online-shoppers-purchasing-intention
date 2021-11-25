@@ -1,40 +1,43 @@
 # author: Nico Van den Hooff
 # created: 2021-11-23
-# last updated: 2021-11-23
+# last updated on: 2021-11-23
+# last updated by: Nico Van den Hooff
 
 """
 TODO: Do we want precision recall curves plots?  Right now just have CMs.
-TODO: Should we create a figure folder in the doc folder?
-TODO: Hyperparameter tuning script?
 
 Reads in the pre-processed train and test data.  Splits this data into X and y arrays.
 Cross validates a selection of machine learning models and outputs the results of 
 cross validation along with confusion matrices.
 
-Usage: src/ml_modelling.py --train=<train> --test=<test> --output_path=<output_path>
+Usage: src/ml_modelling.py [--train=<train>] [--test=<test>] [--output_path=<output_path>]
 
 Options:
---train=<train>                 File path of the train data [default: data/raw/train.csv]
---test=<test>                   File path of the test data [default: data/raw/test.csv]
---output_path=<output_path>     Folder path where to write results [default: doc/]
+--train=<train>                 File path of the train data [default: data/processed/train.csv]
+--test=<test>                   File path of the test data [default: data/processed/test.csv]
+--output_path=<output_path>     Folder path where to write results [default: results/]
 """
 
-opt = docopt(__doc__)
 
-
-import xgboost as xgb
+import warnings
 import pandas as pd
-
+import xgboost as xgb
 from docopt import docopt
 from sklearn.svm import SVC
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import ConfusionMatrixDisplay
-from sklearn.model_selection import cross_validate
+from sklearn.model_selection import cross_validate, cross_val_predict
+from sklearn.exceptions import UndefinedMetricWarning
+
+opt = docopt(__doc__)
+
+# turn off warnings for zero division calculations in DummyClassifier CV
+warnings.filterwarnings(action="ignore", category=UndefinedMetricWarning)
 
 
-def read_data(train, test):
+def read_cleaned_data(train, test):
     """Reads in train and test data and returns as pandas DataFrames.
 
     Parameters
@@ -88,10 +91,10 @@ def get_models():
     """
     models = {
         "DummyClassifier": DummyClassifier(),
-        "LogisticRegression": LogisticRegression(),
+        "LogisticRegression": LogisticRegression(max_iter=1500),  # helps convergence
         "SVC": SVC(),
         "RandomForest": RandomForestClassifier(),
-        "XGBoost": xgb.XGBClassifier(),
+        "XGBoost": xgb.XGBClassifier(use_label_encoder=False, eval_metric="logloss"),
     }
 
     return models
@@ -129,7 +132,7 @@ def get_mean_cv_scores(model, X_train, y_train, **kwargs):
 
 
 def cross_validate_models(
-    models, X_train, y_train, cv=5, metrics=["precision", "recall"]
+    models, X_train, y_train, cv=5, metrics=["accuracy", "precision", "recall", "f1"]
 ):
     """Performs cross validation for a set of models and returns results.
 
@@ -163,7 +166,7 @@ def cross_validate_models(
     return results_df
 
 
-def get_confusion_matrices(models, X_train, y_train, cv=5):
+def get_confusion_matrices(models, X_train, y_train):
     """Calculates and returns the confusion matrices for a set of models.
 
     Parameters
@@ -174,8 +177,6 @@ def get_confusion_matrices(models, X_train, y_train, cv=5):
         The feature matrix
     y_train : numpy ndarray
         The target labels
-    cv : int, optional
-        Number of folds to perform, by default 5
 
     Returns
     -------
@@ -187,13 +188,15 @@ def get_confusion_matrices(models, X_train, y_train, cv=5):
     for name, model in models.items():
         labels = ["No Purchase", "Purchase"]
 
+        y_pred = cross_val_predict(model, X_train, y_train)
+
         # creates base confusion matrix plot
-        cm = ConfusionMatrixDisplay.from_estimator(
-            model, X_train, y_train, display_labels=labels
+        cm = ConfusionMatrixDisplay.from_predictions(
+            y_train, y_pred, display_labels=labels
         )
 
         # sets the title of the confusion matrix
-        cm.ax_set_title(f"{name} Confusion Matrix")
+        cm.ax_.set_title(f"{name} Confusion Matrix")
 
         # extracts and adds matplotlib figure to dictionary
         cm_figures[name] = cm.figure_
@@ -207,32 +210,39 @@ def main(train, test, output_path):
     Parameters
     ----------
     train : str
-        [description]
-    test : [type]
-        [description]
-    output_path : [type]
-        [description]
+        Input path for train data from docopt
+    test : str
+        Input path for train data from docopt
+    output_path : str
+        Output folder path to save results
     """
 
     # train and test data
-    train_df, test_df = read_data(train, test)
+    print("-- Reading in clean data")
+    train_df, test_df = read_cleaned_data(train, test)
+
+    print("-- Generating X and y array")
     X_train, _, y_train, _ = get_X_y(train_df, test_df)
 
     # create model instances
+    print("-- Generating base models")
     models = get_models()
 
     # cross validate and write results to csv
+    print("-- Cross validating models")
     results_df = cross_validate_models(models, X_train, y_train)
-    results_df.to_csv(output_path + "model_selection_results.csv", index=False)
 
     # create confusion matrices
-    cm_figures = get_confusion_matrices()
+    print("-- Creating confusion matrices")
+    cm_figures = get_confusion_matrices(models, X_train, y_train)
 
-    # output confusion matrices as images
+    print("-- Output results and images")
+    # output results
+    results_df.to_csv(f"{output_path}model_selection_results.csv")
+
+    # output cm images
     for model, figure in cm_figures.items():
-        # TODO: where should these figures be saved too?
-        # TODO: what image format? use svg for now
-        name = f"{model}_cm.svg"
+        name = f"{output_path}{model}_cm.png"
         figure.savefig(name)
 
 
