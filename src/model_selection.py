@@ -15,7 +15,7 @@ Usage: src/ml_modelling.py [--train=<train>] [--test=<test>] [--output_path=<out
 Options:
 --train=<train>                 File path of the train data [default: data/processed/train.csv]
 --test=<test>                   File path of the test data [default: data/processed/test.csv]
---output_path=<output_path>     Folder path where to write results [default: doc/]
+--output_path=<output_path>     Folder path where to write results [default: results/]
 """
 
 
