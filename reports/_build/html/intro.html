@@ -177,6 +177,16 @@
    Research question
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-set">
+   Data set
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliography">
+   Bibliography
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -197,6 +207,28 @@
 <div><p>Given clickstream and session data of a user who visits an e-commerce website, can we predict whether or not that visitor will make a purchase?</p>
 </div></blockquote>
 <p>Nowadays, it is common for companies to sell their products online, with little to no physical presence such as a traditional brick and mortar store. Answering this question is critical for these types of companies in order to ensure that they are able to remain profitable. This information can be used to nudge a potential customer in real-time to complete an online purchase, increasing overall purchase conversion rates. Examples of nudges include highlighting popular products through social proof, and exit intent overlay on webpages.</p>
+</div>
+<div class="section" id="data-set">
+<h2>Data set<a class="headerlink" href="#data-set" title="Permalink to this headline">¶</a></h2>
+<p>The dataset used in our analysis was obtained from the <a class="reference external" href="https://archive-beta.ics.uci.edu/">UC Irvine Machine Learning Repository</a>, a popular website with hundreds of datasets available for analysis. The creators of the dataset are C. Sakar and Yomi Kastro, and the original dataset can be obtained at <span id="id1">[<a class="reference internal" href="#id3">Sakar and Kasto, 2018</a>]</span> <a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/online+shoppers+purchasing+intention+dataset">link</a>.</p>
+<p>Each row in the dataset contains a feature vector that contains data corresponding to a visit “session” (period of time spent) of a user on an e-commerce website. The dataset was specifically formed so that each session would belong to a unique user over a 1-year period. The total number of sessions in the dataset is 12,330.</p>
+<p>Examples of features included in the dataset are:</p>
+<ul class="simple">
+<li><p>Duration (time) spent on Administrative, Informational, or Product related sections of the website.</p></li>
+<li><p>Data from Google Analytics such as bounce rate, exit rate, and page value.</p></li>
+<li><p>What month the session took place it, and whether or not the day of the session falls on a weekend.</p></li>
+<li><p>The operating system and browser used by the website visitor.</p></li>
+</ul>
+<p>The target feature and class label in the dataset is called <code class="docutils literal notranslate"><span class="pre">Revenue</span></code> and contains either a <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> value, which correspond to whether or not the user made a purchase on the website during their visit, respectively. It is worth noting that the dataset is unbalanced, as 85% of the sessions contain a <code class="docutils literal notranslate"><span class="pre">False</span></code> class label, with the remaining 15% containing a <code class="docutils literal notranslate"><span class="pre">True</span></code> label.</p>
+</div>
+<div class="section" id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h2>
+<p id="id2"><dl class="citation">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">SK18</a></span></dt>
+<dd><p>Sakar, C. and Yomi. Kasto. UCI machine learning repository. <em>Computing in Science \\&amp; Engineering</em>, 2018.</p>
+</dd>
+</dl>
+</p>
 <!-- Sample content
 
 :::{note}
