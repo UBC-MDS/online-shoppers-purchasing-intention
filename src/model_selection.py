@@ -204,6 +204,65 @@ def get_confusion_matrices(models, X_train, y_train):
     return cm_figures
 
 
+def get_styled_df_html(df, round_num=False, digits=None):
+    """Returns the html code for a styled pandas DataFrame
+
+    Parameters
+    ----------
+    df : pandas DataFrame
+        The DataFrame to obtain the styled html code for
+    round_num : bool, optional
+        Whether or not to round the numbers in the DataFrame, by default False
+    digits : int or None, optional
+        The number of digits to round to, by default None
+
+    Returns
+    -------
+    str
+        The html code for the styled dataframe
+    """
+
+    # css formatters for cell highlights, index and header colours
+    cell_hover = {"selector": "td:hover", "props": [("background-color", "#ffffb3")]}
+
+    index_names = {
+        "selector": ".index_name",
+        "props": "font-style: italic; color: darkgrey; font-weight:normal;",
+    }
+
+    headers = {
+        "selector": "th:not(.index_name)",
+        "props": "background-color: #000066; color: white;",
+    }
+
+    if round_num:
+        fmt = "{:." + str(digits) + "f}"
+        styled_df = df.style.format(fmt)
+    else:
+        styled_df = df.style.format()
+
+    # apply css and get html code
+    styled_df.set_table_styles([cell_hover, index_names, headers])
+    styled_df_html = styled_df.to_html()
+
+    return styled_df_html
+
+
+def write_df_html(styled_df_html, filename):
+    """Writes the html code for a style Pandas Dataframe to a .html file.
+
+    Parameters
+    ----------
+    styled_df_html : str
+        The html code to write to a file
+    filename : str
+        The name of the .html file (do not include .html in this)
+    """
+    file = open(f"{filename}.html", "w")
+    file.write(styled_df_html)
+    file.close()
+
+
 def main(train, test, output_path):
     """Main function that performs model selection and outputs the results.
 
@@ -236,14 +295,15 @@ def main(train, test, output_path):
     print("-- Creating confusion matrices")
     cm_figures = get_confusion_matrices(models, X_train, y_train)
 
-    print("-- Output results and images")
+    print("-- Output results (html) and images")
     # output results
-    results_df.to_csv(f"{output_path}model_selection_results.csv")
+    styled_results_df_html = get_styled_df_html(results_df)
+    write_df_html(styled_results_df_html, f"{output_path}model_selection_results")
 
     # output cm images
     for model, figure in cm_figures.items():
         name = f"{output_path}{model}_cm.png"
-        figure.savefig(name)
+        figure.savefig(name, bbox_inches="tight")
 
 
 if __name__ == "__main__":

@@ -20,10 +20,15 @@ import numpy as np
 import pandas as pd
 from docopt import docopt
 from scipy.stats import randint
-from model_selection import read_cleaned_data, get_X_y
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
+from model_selection import (
+    read_cleaned_data,
+    get_X_y,
+    get_styled_df_html,
+    write_df_html,
+)
 
 
 opt = docopt(__doc__)
@@ -182,9 +187,19 @@ def main(train, test, output_path):
         results["best_estimator"], X_train, y_train, X_test, y_test
     )
 
-    print("-- Output results and images")
-    cm_plot.savefig(f"{output_path}Final_RandomForest_cm.png")
-    cr_df.to_csv(f"{output_path}Final_Classification_Report.csv")
+    print("-- Output results (html) and images")
+    cm_plot.savefig(f"{output_path}Final_RandomForest_cm.png", bbox_inches="tight")
+
+    styled_results_df_html = get_styled_df_html(
+        cr_df,
+        round_num=True,
+        digits=3,
+    )
+
+    write_df_html(
+        styled_results_df_html,
+        f"{output_path}Final_Classification_Report",
+    )
 
 
 if __name__ == "__main__":
