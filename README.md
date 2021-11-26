@@ -69,5 +69,3 @@ The source code for the site is licensed under the MIT license, which you can fi
 ## References
 
 Sakar, C., and Kasto, Yomi. 2018. “UCI Machine Learning Repository.” University of California, Irvine, School of Information; Computer Sciences. [https://archive-beta.ics.uci.edu/](https://archive-beta.ics.uci.edu/).
-
-Wickham, Hadley. "Tidy data." Journal of statistical software 59.1 (2014): 1-23.
