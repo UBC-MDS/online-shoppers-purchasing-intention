@@ -22,6 +22,22 @@ Examples of features included in the dataset are:
 
 The target feature and class label in the dataset is called `Revenue` and contains either a `True` or `False` value, which correspond to whether or not the user made a purchase on the website during their visit, respectively. It is worth noting that the dataset is unbalanced, as 85% of the sessions contain a `False` class label, with the remaining 15% containing a `True` label.
 
+## Data Cleaning & Feature Engineering
+
+The dataset has good data quality in general. It is in a tidy format {cite}`wickham2014tidy`, and does not contain `NULL` values. There are some minor issues with outliers, but we have decided not to handle them.
+
+Feature engineering is done to capture feature interactions, and aggregating common features. The table below list some of our new features:
+
+| Feature Name          |      Description      |
+|-----------------------|-----------------------|
+| `total_page_view`     | Sum of page views from `Administrative`, `Informational`, `ProductRelated` pages |
+| `total_page_duration` | Sum of page durations from `Administrative`, `Informational`, `ProductRelated` pages |
+| `product_view_percent`| Percentage of `ProductRelated` page views |
+| `product_dur_percent`| Percentage of `ProductRelated` page durations |
+| `ave_product_duration`| Average duration per page for `ProductRelated` pages |
+| `page_values_x_bounce_rate`| `PageValues` $\times$ (1 - `BounceRates`) |
+| `page_values_per_product_view`| `PageValues` per `ProductRelated` page views |
+| `page_values_per_product_dur`| `PageValues` per `ProductRelated` page durations |
 ## Bibliography
 
 ```{bibliography}
