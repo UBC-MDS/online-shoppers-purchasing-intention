@@ -207,7 +207,10 @@ def get_transformer():
     return ct
 
 
+# TODO: move tests into a separate files
 def test_function():
+    """Test functions in data_preprocess.py"""
+    print("====Test===")
     # train_test_split
     df1 = pd.DataFrame(
         {
@@ -226,8 +229,42 @@ def test_function():
             ],
         }
     )
-    assert len(train_test_split(df1, 0.2)[1]) == 2
-    assert train_test_split(df1, 0.2)[1].iloc[0, 0] == 3
+    assert len(train_test_split(df1, 0.2)[1]) == 2, "Error in train_test_split"
+    assert train_test_split(df1, 0.2)[1].iloc[0, 0] == 3, "Error in train_test_split"
+
+    # clean_data
+    df2 = pd.DataFrame({"Month": ["June"], "Revenue": 1})
+    assert clean_data(df2).iloc[0, 0] == "Jun", "Error in clean_data"
+
+    # feat_engineer
+    df3 = pd.DataFrame(
+        [[0, 0, 0, 0, 0, 0, 0, 0, 100, 1, "Feb", 1, 1, 1, 1, "TRUE", "FALSE", "FALSE"]],
+        columns=[
+            "Administrative",
+            "Administrative_Duration",
+            "Informational",
+            "Informational_Duration",
+            "ProductRelated",
+            "ProductRelated_Duration",
+            "BounceRates",
+            "ExitRates",
+            "PageValues",
+            "SpecialDay",
+            "Month",
+            "OperatingSystems",
+            "Browser",
+            "Region",
+            "TrafficType",
+            "VisitorType",
+            "Weekend",
+            "Revenue",
+        ],
+    )
+    assert (
+        feat_engineer(df3).isnull().values.any() == False
+    ), "Error in fill na in feat_engineer"
+
+    print("====Test Ends===")
 
 
 def main(input_path, output_path, test_size):
