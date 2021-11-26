@@ -233,7 +233,7 @@
 </div>
 <div class="section" id="base-model">
 <h2>Base model<a class="headerlink" href="#base-model" title="Permalink to this headline">¶</a></h2>
-<p>Our based model will be the <code class="docutils literal notranslate"><span class="pre">DummyClassifier</span></code> model from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> with the default parameters.  From the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> [documentation]<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html</a>), the default <code class="docutils literal notranslate"><span class="pre">strategy</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">&quot;prior&quot;:</span> <span class="pre">always</span> <span class="pre">predicts</span> <span class="pre">the</span> <span class="pre">class</span> <span class="pre">that</span> <span class="pre">maximizes</span> <span class="pre">the</span> <span class="pre">class</span> <span class="pre">prior</span> <span class="pre">(like</span> <span class="pre">“most_frequent”)</span> <span class="pre">and</span> <span class="pre">predict_proba</span> <span class="pre">returns</span> <span class="pre">the</span> <span class="pre">class</span> <span class="pre">prior.</span></code></p>
+<p>Our based model will be the <code class="docutils literal notranslate"><span class="pre">DummyClassifier</span></code> model from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> with the default parameters.  From the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html">documentation</a>, the default <code class="docutils literal notranslate"><span class="pre">strategy</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">prior</span></code> which always predicts the class that maximizes the class prior (like “most_frequent”) and predict_proba returns the class prior.</p>
 </div>
 <div class="section" id="additional-models-tested">
 <h2>Additional models tested<a class="headerlink" href="#additional-models-tested" title="Permalink to this headline">¶</a></h2>
@@ -247,7 +247,7 @@
 </div>
 <div class="section" id="cross-validation-results">
 <h2>Cross validation results<a class="headerlink" href="#cross-validation-results" title="Permalink to this headline">¶</a></h2>
-<p>We performed 5 fold cross validation for the above models on our training data and observed the following metrics:</p>
+<p>We performed 5 fold cross validation for the above models on our training data and observed the following metrics.  Please note that the following scores are the mean values over the 5 folds of cross validation:</p>
 <style type="text/css">
 #T_2348e_ td:hover {
   background-color: #ffffb3;
@@ -356,19 +356,31 @@
     </tr>
   </tbody>
 </table>
+<p>From the above we can see that:</p>
+<ul class="simple">
+<li><p>The logistic regression model had the best precision scores on the validation tests during cross validation.  However, the recall scores of this model were quite poor.</p></li>
+<li><p>The support vector machine had similar precision scores to the logistic regression model, and slightly better recall scores.</p></li>
+<li><p>The random forest model and XGBoost models both severely overfit the training set, which can be seen by perfrect accuracy and precision scores.  However, the recall scores on the test set of these models are still higher than the logistic regression and support vector machine models.</p></li>
+<li><p>The F1 scores of the models are consistent with the analysis above.</p></li>
+</ul>
 </div>
 <div class="section" id="preliminary-confusion-matrices">
 <h2>Preliminary confusion matrices<a class="headerlink" href="#preliminary-confusion-matrices" title="Permalink to this headline">¶</a></h2>
 <p>In addition we used sklearns <code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code> to generate the following preliminary confusion matrices:</p>
 <p><img alt="DummyClassifier" src="../../../results/DummyClassifier_cm.png" /></p>
+<p>The dummy classifier confusion matrix simply serves as a baseline.</p>
 <p><img alt="LogisticRegression" src="../../../results/LogisticRegression_cm.png" /></p>
+<p>The logistic regression model is outputing 220 false positives, and 927 false negatives.</p>
 <p><img alt="SVC" src="../../../results/SVC_cm.png" /></p>
+<p>The support vector machine is outputing 286 false positives, and 777 false negatives.</p>
 <p><img alt="RandomForest" src="../../../results/RandomForest_cm.png" /></p>
+<p>The random forest is outputing 388 false positives, and 666 false negatives.</p>
 <p><img alt="XGBoost" src="../../../results/XGBoost_cm.png" /></p>
+<p>The XGBoost model is outputing 478 false positives, and 657 false negatives.</p>
 </div>
 <div class="section" id="model-selection">
 <h2>Model selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
-<p>Based on the above results with no hyperparameter tuning, we note that the Random Forest model performed the best on the training set.  Therefore we have selected this model to tune further.</p>
+<p>We note that the above results were obtained with no hyperparameter tuning.  Based on these results alone, we can see that the random forest appears to be a promising model for our problem.  We will therefore select this model to tune further.  Random forests tend to be a great model for classification problems as they inject randomness into a probelm in the form of bagging and random features <span id="id1">[<a class="reference internal" href="intro.html#id6">Breiman, 2001</a>]</span>.</p>
 </div>
 </div>
 

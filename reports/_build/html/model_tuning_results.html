@@ -181,10 +181,80 @@
   <a class="reference internal nav-link" href="#hyperparameter-tuning">
    Hyperparameter tuning
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#n-estimators">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       n_estimators
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#criterion">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       criterion
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#max-depth">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       max_depth
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#max-features">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       max_features
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#min-samples-split">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       min_samples_split
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#min-samples-leaf">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       min_samples_leaf
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#class-weight">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       class_weight
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#randomized-search-cross-validation">
+     Randomized search cross validation
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#final-results">
-   Final results
+  <a class="reference internal nav-link" href="#final-results-test-set">
+   Final results (test set)
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -198,6 +268,11 @@
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discussion-of-results">
+   Discussion of results
+  </a>
  </li>
 </ul>
 
@@ -215,19 +290,46 @@
 <div class="section" id="hyperparameter-tuning">
 <h2>Hyperparameter tuning<a class="headerlink" href="#hyperparameter-tuning" title="Permalink to this headline">¶</a></h2>
 <p>We tuned the following hyperparameters of the Random Forest classifier:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">n_estimators</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">criterion</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">max_depth</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">max_features</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">class_weight</span></code></p></li>
-</ul>
-<p>Specifically, we used Randomized Search with cross validation to select the best parameters in the search space above.</p>
+<p>(The below is a summary of the detailed discussion of the hyperparameters on sk-learns website <span id="id1">[<a class="reference internal" href="intro.html#id7">Pedregosa <em>et al.</em>, 2011</a>]</span>)</p>
+<div class="section" id="n-estimators">
+<h3><code class="docutils literal notranslate"><span class="pre">n_estimators</span></code><a class="headerlink" href="#n-estimators" title="Permalink to this headline">¶</a></h3>
+<p>This is the number of trees (models) to include in our forest (ensemble of models).  We note that a higher number of trees increases model complexity and can introduce overfitting.</p>
 </div>
-<div class="section" id="final-results">
-<h2>Final results<a class="headerlink" href="#final-results" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="criterion">
+<h3><code class="docutils literal notranslate"><span class="pre">criterion</span></code><a class="headerlink" href="#criterion" title="Permalink to this headline">¶</a></h3>
+<p>This is the function that is used to measure the quality of a split at a node in the tree.  <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> allows for either <code class="docutils literal notranslate"><span class="pre">gini</span></code> or <code class="docutils literal notranslate"><span class="pre">entropy</span></code> functions to be used.</p>
+</div>
+<div class="section" id="max-depth">
+<h3><code class="docutils literal notranslate"><span class="pre">max_depth</span></code><a class="headerlink" href="#max-depth" title="Permalink to this headline">¶</a></h3>
+<p>This is the maximum depth of each tree in the forest.  Higher values increase model complexity and can introduce overfitting.</p>
+</div>
+<div class="section" id="max-features">
+<h3><code class="docutils literal notranslate"><span class="pre">max_features</span></code><a class="headerlink" href="#max-features" title="Permalink to this headline">¶</a></h3>
+<p>This is the number of features that are considered when making the best split at a node in the tree.  We used the following values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> which sets <code class="docutils literal notranslate"><span class="pre">max_features=sqrt(n_features)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log2</span></code> which sets <code class="docutils literal notranslate"><span class="pre">max_features=log2(n_features)</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="min-samples-split">
+<h3><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code><a class="headerlink" href="#min-samples-split" title="Permalink to this headline">¶</a></h3>
+<p>This is the minimum number of samples required to split an internal node of the tree.</p>
+</div>
+<div class="section" id="min-samples-leaf">
+<h3><code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code><a class="headerlink" href="#min-samples-leaf" title="Permalink to this headline">¶</a></h3>
+<p>This is the minimum number of samples required to be at a leaf node.</p>
+</div>
+<div class="section" id="class-weight">
+<h3><code class="docutils literal notranslate"><span class="pre">class_weight</span></code><a class="headerlink" href="#class-weight" title="Permalink to this headline">¶</a></h3>
+<p>This hyperparameter can be used to deal with the imbalance in our training data.  Specifically, this hyper parameter controls the weights associated with each class.  We tested <code class="docutils literal notranslate"><span class="pre">balanced</span></code> which uses the values of our target label to automatically adjust weights inversely proportional to class frequencies as <code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">/</span> <span class="pre">(n_classes</span> <span class="pre">*</span> <span class="pre">np.bincount(y))</span></code></p>
+</div>
+<div class="section" id="randomized-search-cross-validation">
+<h3>Randomized search cross validation<a class="headerlink" href="#randomized-search-cross-validation" title="Permalink to this headline">¶</a></h3>
+<p>In order to tune the hyperparameters of our model we used randomized search cross validation.  We set a budget of 100 models to train.</p>
+</div>
+</div>
+<div class="section" id="final-results-test-set">
+<h2>Final results (test set)<a class="headerlink" href="#final-results-test-set" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="confusion-matrix">
 <h3>Confusion matrix<a class="headerlink" href="#confusion-matrix" title="Permalink to this headline">¶</a></h3>
 <p><img alt="RandomForestFinal" src="../../../results/Final_RandomForest_cm.png" /></p>
@@ -297,6 +399,10 @@
   </tbody>
 </table>
 </div>
+</div>
+<div class="section" id="discussion-of-results">
+<h2>Discussion of results<a class="headerlink" href="#discussion-of-results" title="Permalink to this headline">¶</a></h2>
+<p>The tuned random forest is outputing 268 false positives, and 88 false negatives.  The macro average recall score is 0.827 and the macro average precision score is 0.748, which is above our budget of 0.60 that we set at the beginning of our project.</p>
 </div>
 </div>
 
