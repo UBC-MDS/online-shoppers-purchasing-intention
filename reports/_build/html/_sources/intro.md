@@ -42,17 +42,3 @@ Feature engineering is done to capture feature interactions, and aggregating com
 
 ```{bibliography}
 ```
-
-<!-- Sample content
-
-:::{note}
-Here is a note!
-:::
-
-And here is a code block:
-
-```
-e = mc^2
-```
-
-EOF -->

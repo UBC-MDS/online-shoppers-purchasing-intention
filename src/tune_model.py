@@ -48,7 +48,7 @@ def create_model_and_params():
         "n_estimators": randint(100, 1000),
         "criterion": ["gini", "entropy"],
         "max_depth": np.arange(10, 100, 5),
-        "max_features": ["auto", "sqrt", "log2"],
+        "max_features": ["auto", "log2"],
         "min_samples_split": [2, 4, 8],
         "min_samples_leaf": [1, 2, 4],
         "class_weight": ["balanced", "balanced_subsample", None],

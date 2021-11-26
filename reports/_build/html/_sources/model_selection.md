@@ -13,7 +13,7 @@ Based on this, we can use precision, recall, and average precision. To be more s
 
 ## Base model
 
-Our based model will be the `DummyClassifier` model from `sklearn` with the default parameters.  From the `sklearn` [documentation]https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html), the default `strategy` parameter is `"prior": always predicts the class that maximizes the class prior (like “most_frequent”) and predict_proba returns the class prior.`
+Our based model will be the `DummyClassifier` model from `sklearn` with the default parameters.  From the `sklearn` [documentation](https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html), the default `strategy` parameter is `prior` which always predicts the class that maximizes the class prior (like “most_frequent”) and predict_proba returns the class prior.
 
 ## Additional models tested
 
@@ -26,7 +26,7 @@ In performing model selection, we will fit the following models to our training 
 
 ## Cross validation results
 
-We performed 5 fold cross validation for the above models on our training data and observed the following metrics:
+We performed 5 fold cross validation for the above models on our training data and observed the following metrics.  Please note that the following scores are the mean values over the 5 folds of cross validation:
 
 <style type="text/css">
 #T_2348e_ td:hover {
@@ -137,20 +137,37 @@ We performed 5 fold cross validation for the above models on our training data a
   </tbody>
 </table>
 
+From the above we can see that:
+
+- The logistic regression model had the best precision scores on the validation tests during cross validation.  However, the recall scores of this model were quite poor.
+- The support vector machine had similar precision scores to the logistic regression model, and slightly better recall scores.
+- The random forest model and XGBoost models both severely overfit the training set, which can be seen by perfrect accuracy and precision scores.  However, the recall scores on the test set of these models are still higher than the logistic regression and support vector machine models.
+- The F1 scores of the models are consistent with the analysis above.
+
 ## Preliminary confusion matrices
 
 In addition we used sklearns `cross_val_predict` to generate the following preliminary confusion matrices:
 
 ![DummyClassifier](../../../results/DummyClassifier_cm.png)
 
+The dummy classifier confusion matrix simply serves as a baseline.
+
 ![LogisticRegression](../../../results/LogisticRegression_cm.png)
+
+The logistic regression model is outputing 220 false positives, and 927 false negatives.
 
 ![SVC](../../../results/SVC_cm.png)
 
+The support vector machine is outputing 286 false positives, and 777 false negatives.
+
 ![RandomForest](../../../results/RandomForest_cm.png)
+
+The random forest is outputing 388 false positives, and 666 false negatives.
 
 ![XGBoost](../../../results/XGBoost_cm.png)
 
+The XGBoost model is outputing 478 false positives, and 657 false negatives.
+
 ## Model selection
 
-Based on the above results with no hyperparameter tuning, we note that the Random Forest model performed the best on the training set.  Therefore we have selected this model to tune further.
+We note that the above results were obtained with no hyperparameter tuning.  Based on these results alone, we can see that the random forest appears to be a promising model for our problem.  We will therefore select this model to tune further.  Random forests tend to be a great model for classification problems as they inject randomness into a probelm in the form of bagging and random features {cite}`breiman2001random`.
