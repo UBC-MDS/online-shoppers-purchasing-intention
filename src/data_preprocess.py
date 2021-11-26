@@ -207,6 +207,29 @@ def get_transformer():
     return ct
 
 
+def test_function():
+    # train_test_split
+    df1 = pd.DataFrame(
+        {
+            "row": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "Month": [
+                "Jan",
+                "Feb",
+                "Dec",
+                "Dec",
+                "Mar",
+                "Jan",
+                "Jan",
+                "Jan",
+                "Jan",
+                "Jan",
+            ],
+        }
+    )
+    assert len(train_test_split(df1, 0.2)[1]) == 2
+    assert train_test_split(df1, 0.2)[1].iloc[0, 0] == 3
+
+
 def main(input_path, output_path, test_size):
     """Main function for data preprocessing. Includes reading of data, data
     cleaning, train/test split, feature engineering, and feature
@@ -222,6 +245,9 @@ def main(input_path, output_path, test_size):
     test_size : string
         Test data proportion from docopt
     """
+    # Run test function
+    test_function()
+
     test_size = float(test_size)
 
     # Read raw data
