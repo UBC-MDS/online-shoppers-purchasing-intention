@@ -206,13 +206,21 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="data-analysis">
 <h1>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h1>
+<p>The data consists of numeric and categorical features. Amongst these features, “BounceRates”, “ExitRates” and “PageValues” features represent the metrics measured by “Google Analytics” for each page in the e-commerce site. We have mentioned below the key observations from studying the correlation in the data:</p>
+<ul class="simple">
+<li><p>“BounceRates” and “ExitRates” are similar to each other.</p></li>
+<li><p>Sessions with high BounceRates have less webpage interaction and less sales</p></li>
+<li><p>“PageValues” could be an important feature. It has positive correlation with “Revenue”, and is the most direct feature linking to Revenue.</p></li>
+</ul>
 <div class="section" id="correlation-plot-of-the-dataset">
 <h2>Correlation plot of the dataset<a class="headerlink" href="#correlation-plot-of-the-dataset" title="Permalink to this headline">¶</a></h2>
 <p><img alt="correlation_plot" src="../../../results/chart_correlation.png" /></p>
+<p>We looked at the distribution of the numeric features, but this analysis proved inconclusive.</p>
 </div>
 <div class="section" id="distribution-of-the-numerical-variables">
 <h2>Distribution of the numerical variables<a class="headerlink" href="#distribution-of-the-numerical-variables" title="Permalink to this headline">¶</a></h2>
 <p><img alt="distribution_numerical_vars_plot" src="../../../results/chart_numeric_var_distribution.png" /></p>
+<p>Finally, we have highlighted below the imbalance in the taget variable. As mentioned in the data set introduction, 85% of the sessions contain a <code class="docutils literal notranslate"><span class="pre">False</span></code> class label, with the remaining 15% containing a <code class="docutils literal notranslate"><span class="pre">True</span></code> label</p>
 </div>
 <div class="section" id="target-distribution">
 <h2>Target distribution<a class="headerlink" href="#target-distribution" title="Permalink to this headline">¶</a></h2>

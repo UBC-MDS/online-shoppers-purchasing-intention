@@ -169,7 +169,7 @@ def main(input_path, output_path):
         Path of the folder to save the charts
 
     """
-    print(f'Entered main func')
+    # print(f'Entered main func')
     df = pd.read_csv(input_path)
     numeric_cols = df.select_dtypes('number').columns.tolist()
     category_cols = ['Month', 'VisitorType', 'Weekend']
@@ -188,6 +188,20 @@ def main(input_path, output_path):
     chart_correlation(data=df, output_path=output_path)
     print(f'End of EDA')
 
-    
+def test_eda_charts(input_path, output_path):
+    """Test for input data type.
+
+    Parameters
+    ----------
+    input_path : str
+        Path of the data file to carry out the EDA
+    output_path : str
+        Path of the folder to save the charts
+    """
+
+    df = pd.read_csv(input_path)
+    assert isinstance(df, pd.DataFrame, "Error in df type")
+
 if __name__ == "__main__":
+    test_eda_charts(opt["--input_path"], opt["--output_path"])
     main(opt["--input_path"], opt["--output_path"])
