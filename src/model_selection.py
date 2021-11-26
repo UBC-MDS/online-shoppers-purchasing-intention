@@ -306,5 +306,49 @@ def main(train, test, output_path):
         figure.savefig(name, bbox_inches="tight")
 
 
+# TODO: move tests into a seperate file
+def tests(train, test):
+    """Tests for all functions except main function.
+
+    Parameters
+    ----------
+    train_df : pandas DataFrame
+        The train DataFrame
+    test_df : pandas DataFrame
+        The test DataFrame
+    """
+
+    # test 1: test type returned by function that reads data
+    train_df, test_df = read_cleaned_data(train, test)
+    assert isinstance(train_df, pd.DataFrame, "Error in train_df type")
+    assert isinstance(test_df, pd.DataFrame, "Error in test_df type")
+
+    # test 2: test type returned by function splits data into arrays
+    X_train, X_test, y_train, y_test = get_X_y(train_df, test_df)
+    assert (
+        pd.concat(X_train, y_train, axis=1).equals(train_df),
+        "Error in Xy train split",
+    )
+    assert (
+        pd.concat(X_test, y_test, axis=1).equals(train_df),
+        "Error in Xy test split",
+    )
+
+    # test 3: test type returned by model generation function
+    models = get_models()
+    assert (isinstance(models, dict), "Error in model dictionary")
+
+    # test 3: test type returned by cross validation function
+    results_df = cross_validate_models(models, X_train, y_train)
+    assert (isinstance(results_df, pd.DataFrame), "Error in results df type")
+
+    # test 4: test type returned by cross validation function
+    cm_figures = get_confusion_matrices(models, X_train, y_train)
+    assert (isinstance(cm_figures, dict), "Error in cm_figures dictionary")
+
+    # no tests written for HTML functions as these will be changed in the future.
+
+
 if __name__ == "__main__":
+    tests(opt["--train"], opt["--test"])
     main(opt["--train"], opt["--test"], opt["--output_path"])
