@@ -71,17 +71,46 @@ In milestone 3 and forward we will focus on:
 - Dealing with the class imbalance in our data
 - Automating our jupyter book images further (right now the html is directly embedded)
 
-
 ## Usage
 
 To replicate this analysis, clone this GitHub repository, install the dependencies listed below, and run the following commands at the command line/terminal from the root directory of this project:
+
 ```
-TODO add commands in a future milestone when they are completed
+The suggested way to run this analysis is as below:
+# download data
+src/download_data.py --url=https://archive.ics.uci.edu/ml/machine-learning-databases/00468/online_shoppers_intention.csv --out_path=data/raw/online_shoppers_intention.csv
+
+# pre-process data
+src/data_preprocess.py --input_path=data/raw/online_shoppers_intention.csv --output_path=data/processed/ --test_size=0.2
+
+# create explanatory data analysis figures and write to file
+src/eda_charts.py --input_path=data/processed/train-eda.csv --output_path=results/
+
+# model selection
+src/ml_modelling.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=results/
+
+# tune model
+src/tune_model.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=results/
+
+# render final report
+jupyter-book build -all reports/
 ```
 
 ## Dependencies
 
-TODO add dependencies once the full list is known.
+Python 3.9 and Python packages
+
+- numpy=1.21.2
+- pandas=1.3.3
+- scikit-learn=1.0
+- scipy=1.7.1
+- docopt=0.6.2
+- xgboost=1.5.0
+- altair=4.1.0
+- altair_saver
+- altair-data-server==0.4.1
+- ipykernel
+- jupyter-book
 
 ## License
 
