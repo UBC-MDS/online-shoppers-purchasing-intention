@@ -1,6 +1,6 @@
 # author: Nico Van den Hooff
 # created: 2021-11-2
-# last updated on: 2021-11-24
+# last updated on: 2021-11-26
 # last updated by: Nico Van den Hooff
 
 """
@@ -202,5 +202,52 @@ def main(train, test, output_path):
     )
 
 
+# TODO: move tests into a seperate file
+def tests(train, test):
+    """Tests for all functions except main function.
+
+    Parameters
+    ----------
+    train_df : pandas DataFrame
+        The train DataFrame
+    test_df : pandas DataFrame
+        The test DataFrame
+    """
+
+    # these are tested in model_selection.py
+    train_df, test_df = read_cleaned_data(train, test)
+    X_train, X_test, y_train, y_test = get_X_y(train_df, test_df)
+
+    # take small slices to make below tests run faster
+    X_train = X_train[:10]
+    X_test = X_test[:10]
+    y_train = y_train[:10]
+    y_test = y_test[:10]
+
+    # test 1: test types of models and search space
+    model, search_space = create_model_and_params()
+    assert (isinstance(model, RandomForestClassifier), "Incorrect model type")
+    assert (isinstance(search_space, dict), "Incorrect search space type")
+
+    # test 2: test type of randomsearchcv
+    random_search = perform_random_search(X_train, y_train, model, search_space)
+    assert (
+        isinstance(random_search, RandomizedSearchCV),
+        "Random search error in return type",
+    )
+
+    # test 3: test types of results
+    results = get_search_results(random_search)
+    assert (isinstance(results, dict), "Incorrect type for results")
+
+    # test 4: test types of plots and classification report
+    cm_plot, cr_df = get_final_predictions(
+        results["best_estimator"], X_train, y_train, X_test, y_test
+    )
+    assert isinstance(cm_plot, matplotlib.pyplot.figure, "Error in CM plot type")
+    assert isinstance(cr_df, pd.DataFrame, "Error in results df type")
+
+
 if __name__ == "__main__":
+    tests(opt["--train"], opt["--test"])
     main(opt["--train"], opt["--test"], opt["--output_path"])
