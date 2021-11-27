@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Model selection and tuning &#8212; Online Shoppers Purchasing Intention</title>
+    <title>Model selection &#8212; Online Shoppers Purchasing Intention</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -99,7 +99,7 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Model selection and tuning
+   Model selection
   </a>
  </li>
  <li class="toctree-l1">
@@ -204,7 +204,7 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#model-selection">
+  <a class="reference internal nav-link" href="#id1">
    Model selection
   </a>
  </li>
@@ -219,8 +219,8 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="model-selection-and-tuning">
-<h1>Model selection and tuning<a class="headerlink" href="#model-selection-and-tuning" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="model-selection">
+<h1>Model selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="metrics">
 <h2>Metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h2>
 <p>In determining the metric we use for our model, we need to first consider the context of Type I and Type II errors for our problem:</p>
@@ -367,20 +367,20 @@
 <div class="section" id="preliminary-confusion-matrices">
 <h2>Preliminary confusion matrices<a class="headerlink" href="#preliminary-confusion-matrices" title="Permalink to this headline">¶</a></h2>
 <p>In addition we used sklearns <code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code> to generate the following preliminary confusion matrices:</p>
-<p><img alt="DummyClassifier" src="../../../results/DummyClassifier_cm.png" /></p>
+<p><img alt="DummyClassifier" src="_images/DummyClassifier_cm.png" /></p>
 <p>The dummy classifier confusion matrix simply serves as a baseline.</p>
-<p><img alt="LogisticRegression" src="../../../results/LogisticRegression_cm.png" /></p>
+<p><img alt="LogisticRegression" src="_images/LogisticRegression_cm.png" /></p>
 <p>The logistic regression model is outputing 220 false positives, and 927 false negatives.</p>
-<p><img alt="SVC" src="../../../results/SVC_cm.png" /></p>
+<p><img alt="SVC" src="_images/SVC_cm.png" /></p>
 <p>The support vector machine is outputing 286 false positives, and 777 false negatives.</p>
-<p><img alt="RandomForest" src="../../../results/RandomForest_cm.png" /></p>
+<p><img alt="RandomForest" src="_images/RandomForest_cm.png" /></p>
 <p>The random forest is outputing 388 false positives, and 666 false negatives.</p>
-<p><img alt="XGBoost" src="../../../results/XGBoost_cm.png" /></p>
+<p><img alt="XGBoost" src="_images/XGBoost_cm.png" /></p>
 <p>The XGBoost model is outputing 478 false positives, and 657 false negatives.</p>
 </div>
-<div class="section" id="model-selection">
-<h2>Model selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
-<p>We note that the above results were obtained with no hyperparameter tuning.  Based on these results alone, we can see that the random forest appears to be a promising model for our problem.  We will therefore select this model to tune further.  Random forests tend to be a great model for classification problems as they inject randomness into a probelm in the form of bagging and random features <span id="id1">[<a class="reference internal" href="intro.html#id11">Breiman, 2001</a>]</span>.</p>
+<div class="section" id="id1">
+<h2>Model selection<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>We note that the above results were obtained with no hyperparameter tuning.  Based on these results alone, we can see that the random forest appears to be a promising model for our problem.  We will therefore select this model to tune further.  Random forests tend to be a great model for classification problems as they inject randomness into a probelm in the form of bagging and random features <span id="id2">[<a class="reference internal" href="intro.html#id11">Breiman, 2001</a>]</span>.</p>
 </div>
 </div>
 

@@ -8,16 +8,16 @@ The data consists of numeric and categorical features. Amongst these features, "
 
 ## Correlation plot of the dataset
 
-![correlation_plot](../../../results/chart_correlation.png)
+![correlation_plot](images/chart_correlation.png)
 
 We looked at the distribution of the numeric features, but this analysis proved inconclusive.
 
 ## Distribution of the numerical variables
 
-![distribution_numerical_vars_plot](../../../results/chart_numeric_var_distribution.png)
+![distribution_numerical_vars_plot](images/chart_numeric_var_distribution.png)
 
 Finally, we have highlighted below the imbalance in the taget variable. As mentioned in the data set introduction, 85% of the sessions contain a `False` class label, with the remaining 15% containing a `True` label
 
 ## Target distribution
 
-![distribution_target_plot](../../../results/chart_target_distribution.png)
+![distribution_target_plot](images/chart_target_distribution.png)

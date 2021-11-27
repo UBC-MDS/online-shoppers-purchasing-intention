@@ -4,6 +4,5 @@ format: jb-book
 root: intro
 chapters:
 - file: data_analysis
-- file: model_results
 - file: model_selection
 - file: model_tuning_results
