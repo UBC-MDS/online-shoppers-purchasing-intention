@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Model selection and tuning &#8212; Online Shoppers Purchasing Intention</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Model Tuning and Results" href="model_tuning_results.html" />
+    <link rel="prev" title="Data Analysis" href="data_analysis.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Online Shoppers Purchasing Intention</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_analysis.html">
+   Data Analysis
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Model selection and tuning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="model_tuning_results.html">
+   Model Tuning and Results
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/model_selection.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#metrics">
+   Metrics
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#base-model">
+   Base model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-models-tested">
+   Additional models tested
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cross-validation-results">
+   Cross validation results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preliminary-confusion-matrices">
+   Preliminary confusion matrices
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-selection">
+   Model selection
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="model-selection-and-tuning">
+<h1>Model selection and tuning<a class="headerlink" href="#model-selection-and-tuning" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="metrics">
+<h2>Metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h2>
+<p>In determining the metric we use for our model, we need to first consider the context of Type I and Type II errors for our problem:</p>
+<ul class="simple">
+<li><p>A type I (false positive) error would be predicting that a customer will make a purchase, when they in fact do not.</p></li>
+<li><p>A type II (false negative) error would be predicting that a customer will not make a purchase, when in fact they do.</p></li>
+</ul>
+<p>In determining the metric we use for our model, we need to consider the business objective of the e-commerce company. We assume that the company will have the following objectives: 1) maximize revenue by increasing purchase conversion rate, and 2) minimize disruption to customer experience from targeted nudges.</p>
+<p>Based on this, we can use precision, recall, and average precision. To be more specific, we want to maximize recall, while keeping a minimum threshold of 60% precision (threshold based on business requirement and tolerance). Average precision will be a secondary metric to monitor, since we are interested in both precision and recall.</p>
+</div>
+<div class="section" id="base-model">
+<h2>Base model<a class="headerlink" href="#base-model" title="Permalink to this headline">¶</a></h2>
+<p>Our based model will be the <code class="docutils literal notranslate"><span class="pre">DummyClassifier</span></code> model from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> with the default parameters.  From the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html">documentation</a>, the default <code class="docutils literal notranslate"><span class="pre">strategy</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">prior</span></code> which always predicts the class that maximizes the class prior (like “most_frequent”) and predict_proba returns the class prior.</p>
+</div>
+<div class="section" id="additional-models-tested">
+<h2>Additional models tested<a class="headerlink" href="#additional-models-tested" title="Permalink to this headline">¶</a></h2>
+<p>In performing model selection, we will fit the following models to our training data, and use cross validation to assess which model to select for further hyperparameter tuning:</p>
+<ul class="simple">
+<li><p>Logistic Regression</p></li>
+<li><p>Support Vector Machine w/ RBF kernl</p></li>
+<li><p>Random Forest Classifier</p></li>
+<li><p>XGBoost Classifier</p></li>
+</ul>
+</div>
+<div class="section" id="cross-validation-results">
+<h2>Cross validation results<a class="headerlink" href="#cross-validation-results" title="Permalink to this headline">¶</a></h2>
+<p>We performed 5 fold cross validation for the above models on our training data and observed the following metrics.  Please note that the following scores are the mean values over the 5 folds of cross validation:</p>
+<style type="text/css">
+#T_2348e_ td:hover {
+  background-color: #ffffb3;
+}
+#T_2348e_ .index_name {
+  font-style: italic;
+  color: darkgrey;
+  font-weight: normal;
+}
+#T_2348e_ th:not(.index_name) {
+  background-color: #000066;
+  color: white;
+}
+</style>
+<table id="T_2348e_">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >DummyClassifier</th>
+      <th class="col_heading level0 col1" >LogisticRegression</th>
+      <th class="col_heading level0 col2" >SVC</th>
+      <th class="col_heading level0 col3" >RandomForest</th>
+      <th class="col_heading level0 col4" >XGBoost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_2348e_level0_row0" class="row_heading level0 row0" >fit_time</th>
+      <td id="T_2348e_row0_col0" class="data row0 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row0_col1" class="data row0 col1" >0.17 (+/- 0.01)</td>
+      <td id="T_2348e_row0_col2" class="data row0 col2" >1.19 (+/- 0.10)</td>
+      <td id="T_2348e_row0_col3" class="data row0 col3" >0.73 (+/- 0.04)</td>
+      <td id="T_2348e_row0_col4" class="data row0 col4" >0.63 (+/- 0.02)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row1" class="row_heading level0 row1" >score_time</th>
+      <td id="T_2348e_row1_col0" class="data row1 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row1_col1" class="data row1 col1" >0.01 (+/- 0.00)</td>
+      <td id="T_2348e_row1_col2" class="data row1 col2" >0.72 (+/- 0.07)</td>
+      <td id="T_2348e_row1_col3" class="data row1 col3" >0.03 (+/- 0.00)</td>
+      <td id="T_2348e_row1_col4" class="data row1 col4" >0.01 (+/- 0.00)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row2" class="row_heading level0 row2" >test_accuracy</th>
+      <td id="T_2348e_row2_col0" class="data row2 col0" >0.85 (+/- 0.00)</td>
+      <td id="T_2348e_row2_col1" class="data row2 col1" >0.88 (+/- 0.02)</td>
+      <td id="T_2348e_row2_col2" class="data row2 col2" >0.89 (+/- 0.03)</td>
+      <td id="T_2348e_row2_col3" class="data row2 col3" >0.89 (+/- 0.03)</td>
+      <td id="T_2348e_row2_col4" class="data row2 col4" >0.88 (+/- 0.04)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row3" class="row_heading level0 row3" >train_accuracy</th>
+      <td id="T_2348e_row3_col0" class="data row3 col0" >0.85 (+/- 0.00)</td>
+      <td id="T_2348e_row3_col1" class="data row3 col1" >0.89 (+/- 0.01)</td>
+      <td id="T_2348e_row3_col2" class="data row3 col2" >0.91 (+/- 0.01)</td>
+      <td id="T_2348e_row3_col3" class="data row3 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_2348e_row3_col4" class="data row3 col4" >0.99 (+/- 0.00)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row4" class="row_heading level0 row4" >test_precision</th>
+      <td id="T_2348e_row4_col0" class="data row4 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row4_col1" class="data row4 col1" >0.73 (+/- 0.15)</td>
+      <td id="T_2348e_row4_col2" class="data row4 col2" >0.71 (+/- 0.13)</td>
+      <td id="T_2348e_row4_col3" class="data row4 col3" >0.69 (+/- 0.13)</td>
+      <td id="T_2348e_row4_col4" class="data row4 col4" >0.65 (+/- 0.16)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row5" class="row_heading level0 row5" >train_precision</th>
+      <td id="T_2348e_row5_col0" class="data row5 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row5_col1" class="data row5 col1" >0.77 (+/- 0.02)</td>
+      <td id="T_2348e_row5_col2" class="data row5 col2" >0.78 (+/- 0.01)</td>
+      <td id="T_2348e_row5_col3" class="data row5 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_2348e_row5_col4" class="data row5 col4" >1.00 (+/- 0.00)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row6" class="row_heading level0 row6" >test_recall</th>
+      <td id="T_2348e_row6_col0" class="data row6 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row6_col1" class="data row6 col1" >0.38 (+/- 0.08)</td>
+      <td id="T_2348e_row6_col2" class="data row6 col2" >0.48 (+/- 0.11)</td>
+      <td id="T_2348e_row6_col3" class="data row6 col3" >0.56 (+/- 0.13)</td>
+      <td id="T_2348e_row6_col4" class="data row6 col4" >0.56 (+/- 0.12)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row7" class="row_heading level0 row7" >train_recall</th>
+      <td id="T_2348e_row7_col0" class="data row7 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row7_col1" class="data row7 col1" >0.41 (+/- 0.04)</td>
+      <td id="T_2348e_row7_col2" class="data row7 col2" >0.55 (+/- 0.07)</td>
+      <td id="T_2348e_row7_col3" class="data row7 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_2348e_row7_col4" class="data row7 col4" >0.94 (+/- 0.02)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row8" class="row_heading level0 row8" >test_f1</th>
+      <td id="T_2348e_row8_col0" class="data row8 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row8_col1" class="data row8 col1" >0.50 (+/- 0.10)</td>
+      <td id="T_2348e_row8_col2" class="data row8 col2" >0.57 (+/- 0.12)</td>
+      <td id="T_2348e_row8_col3" class="data row8 col3" >0.62 (+/- 0.13)</td>
+      <td id="T_2348e_row8_col4" class="data row8 col4" >0.60 (+/- 0.13)</td>
+    </tr>
+    <tr>
+      <th id="T_2348e_level0_row9" class="row_heading level0 row9" >train_f1</th>
+      <td id="T_2348e_row9_col0" class="data row9 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_2348e_row9_col1" class="data row9 col1" >0.53 (+/- 0.04)</td>
+      <td id="T_2348e_row9_col2" class="data row9 col2" >0.64 (+/- 0.05)</td>
+      <td id="T_2348e_row9_col3" class="data row9 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_2348e_row9_col4" class="data row9 col4" >0.97 (+/- 0.01)</td>
+    </tr>
+  </tbody>
+</table>
+<p>From the above we can see that:</p>
+<ul class="simple">
+<li><p>The logistic regression model had the best precision scores on the validation tests during cross validation.  However, the recall scores of this model were quite poor.</p></li>
+<li><p>The support vector machine had similar precision scores to the logistic regression model, and slightly better recall scores.</p></li>
+<li><p>The random forest model and XGBoost models both severely overfit the training set, which can be seen by perfrect accuracy and precision scores.  However, the recall scores on the test set of these models are still higher than the logistic regression and support vector machine models.</p></li>
+<li><p>The F1 scores of the models are consistent with the analysis above.</p></li>
+</ul>
+</div>
+<div class="section" id="preliminary-confusion-matrices">
+<h2>Preliminary confusion matrices<a class="headerlink" href="#preliminary-confusion-matrices" title="Permalink to this headline">¶</a></h2>
+<p>In addition we used sklearns <code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code> to generate the following preliminary confusion matrices:</p>
+<p><img alt="DummyClassifier" src="../../../results/DummyClassifier_cm.png" /></p>
+<p>The dummy classifier confusion matrix simply serves as a baseline.</p>
+<p><img alt="LogisticRegression" src="../../../results/LogisticRegression_cm.png" /></p>
+<p>The logistic regression model is outputing 220 false positives, and 927 false negatives.</p>
+<p><img alt="SVC" src="../../../results/SVC_cm.png" /></p>
+<p>The support vector machine is outputing 286 false positives, and 777 false negatives.</p>
+<p><img alt="RandomForest" src="../../../results/RandomForest_cm.png" /></p>
+<p>The random forest is outputing 388 false positives, and 666 false negatives.</p>
+<p><img alt="XGBoost" src="../../../results/XGBoost_cm.png" /></p>
+<p>The XGBoost model is outputing 478 false positives, and 657 false negatives.</p>
+</div>
+<div class="section" id="model-selection">
+<h2>Model selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
+<p>We note that the above results were obtained with no hyperparameter tuning.  Based on these results alone, we can see that the random forest appears to be a promising model for our problem.  We will therefore select this model to tune further.  Random forests tend to be a great model for classification problems as they inject randomness into a probelm in the form of bagging and random features <span id="id1">[<a class="reference internal" href="intro.html#id11">Breiman, 2001</a>]</span>.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="data_analysis.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Data Analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="model_tuning_results.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Model Tuning and Results</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By MDS DSCI 522 Group 10<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
