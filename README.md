@@ -71,6 +71,10 @@ In milestone 3 and forward we will focus on:
 - Dealing with the class imbalance in our data
 - Automating our jupyter book images further (right now the html is directly embedded)
 
+## Analysis
+
+We have published a copy of our analysis in the form of a [Jupyter Book](https://ubc-mds.github.io/online-shoppers-purchasing-intention/intro.html)
+
 ## Usage
 
 To replicate this analysis, clone this GitHub repository, install the dependencies listed below, and run the following commands at the command line/terminal from the root directory of this project:
