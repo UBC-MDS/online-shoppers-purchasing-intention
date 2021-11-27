@@ -46,7 +46,7 @@ In order to tune the hyperparameters of our model we used randomized search cros
 
 ### Confusion matrix
 
-![RandomForestFinal](../../../results/Final_RandomForest_cm.png)
+![RandomForestFinal](images/Final_RandomForest_cm.png)
 
 ### Classification report
 

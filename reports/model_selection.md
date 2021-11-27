@@ -1,4 +1,4 @@
-# Model selection and tuning
+# Model selection
 
 ## Metrics
 
@@ -148,23 +148,23 @@ From the above we can see that:
 
 In addition we used sklearns `cross_val_predict` to generate the following preliminary confusion matrices:
 
-![DummyClassifier](../../../results/DummyClassifier_cm.png)
+![DummyClassifier](images/DummyClassifier_cm.png)
 
 The dummy classifier confusion matrix simply serves as a baseline.
 
-![LogisticRegression](../../../results/LogisticRegression_cm.png)
+![LogisticRegression](images/LogisticRegression_cm.png)
 
 The logistic regression model is outputing 220 false positives, and 927 false negatives.
 
-![SVC](../../../results/SVC_cm.png)
+![SVC](images/SVC_cm.png)
 
 The support vector machine is outputing 286 false positives, and 777 false negatives.
 
-![RandomForest](../../../results/RandomForest_cm.png)
+![RandomForest](images/RandomForest_cm.png)
 
 The random forest is outputing 388 false positives, and 666 false negatives.
 
-![XGBoost](../../../results/XGBoost_cm.png)
+![XGBoost](images/XGBoost_cm.png)
 
 The XGBoost model is outputing 478 false positives, and 657 false negatives.
 
