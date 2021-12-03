@@ -16,7 +16,7 @@ Examples of unacceptable behavior by participants include:
 - Other unethical or unprofessional conduct
 
 ### Scope
-This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers.
+This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers. You may contact the project maintainers via the following emails: <njvdh@student.ubc.ca>, <ytzify@student.ubc.ca>, <arijc@student.ubc.ca>. 
 
 ### Attribution
 This code of conduct is copied and adapted from the [Pandas Community CoC](https://www.python.org/psf/conduct/) and from the [Contributor Covenant](https://www.contributor-covenant.org), version 1.4, available at http://contributor-covenant.org/version/1/4.
