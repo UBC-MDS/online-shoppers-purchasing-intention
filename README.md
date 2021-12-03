@@ -1,7 +1,7 @@
 
 # Online Shoppers Purchasing Intention
 
-Contributors: Nico Van den Hooff, TZ Yan, Arijeet Chatterjee
+Contributors: Nico Van den Hooff, Ting Zhe (TZ) Yan, Arijeet Chatterjee
 
 ## Summary
 
