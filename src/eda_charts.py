@@ -1,9 +1,9 @@
 # author: Arijeet Chatterjee
 # date: 2021-11-23
+# last updated on: 2021-12-03
+# last updated by: Nico Van den Hooff
 
 """
-TODO: Additional charts?
-
 Reads the pre-processed data and creates the charts for exploratory data analysis
 
 Usage: src/eda_charts.py [--input_path=<input_path>] [--output_path=<output_path>]
@@ -46,9 +46,9 @@ def chart_target_distribution(data, target_var, output_path):
         alt.Chart(data)
         .mark_bar()
         .encode(
-            y=alt.Y(target_var, type="nominal"),
-            x=alt.X("count()", title="Count"),
-            color=alt.Color("Revenue"),
+            alt.X("count()", title="Count"),
+            alt.Y(target_var, type="nominal"),
+            alt.Color("Revenue"),
         )
         .properties(width=450, height=200)
     )
@@ -109,8 +109,8 @@ def chart_categorical_var_count(data, categorical_vars, output_path):
         alt.Chart(data)
         .mark_bar()
         .encode(
-            y=alt.Y(alt.repeat(), type="nominal"),
-            x=alt.X("count()", title="Count"),
+            alt.X("count()", title="Count"),
+            alt.Y(alt.repeat(), type="nominal"),
         )
         .properties(width=450, height=200)
         .repeat(categorical_vars, columns=1)
@@ -168,8 +168,8 @@ def chart_correlation(data, output_path):
         alt.Chart(corr_df, title="Correlation Heatmap")
         .transform_filter(alt.datum.X1 < alt.datum.X2)
         .encode(
-            x=alt.X("X1", title=None),
-            y=alt.Y("X2", title=None),
+            alt.X("X1", title=None),
+            alt.Y("X2", title=None),
         )
         .properties(width=alt.Step(50), height=alt.Step(50))
     )
@@ -201,54 +201,39 @@ def main(input_path, output_path):
         Path of the folder to save the charts
 
     """
-    # print(f'Entered main func')
     df = pd.read_csv(input_path)
-    target_var = "Revenue"
+
     # Change target_var back to categorical for EDA
+    target_var = "Revenue"
     df[target_var] = np.where(df[target_var] == 1, "True", "False")
 
     numeric_cols = df.select_dtypes("number").columns.tolist()
     category_cols = ["Month", "VisitorType", "Weekend"]
 
-    print(f"Creating chart for distribution of the target variable")
     # Create chart to visualize distribution of target variable
+    print(f"-- Creating chart for distribution of the target variable")
     chart_target_distribution(data=df, target_var=target_var, output_path=output_path)
-    print(f"Creating chart for distribution of numeric variables")
+
     # Create chart to visualize distribution of numeric variables
+    print(f"-- Creating chart for distribution of numeric variables")
     chart_numeric_var_distribution(
         data=df, numeric_vars=numeric_cols, output_path=output_path
     )
+
     # Create chart to visualize categorical variables
-    print(f"Creating chart for categorical variables")
+    print(f"-- Creating chart for categorical variables")
     chart_categorical_var_count(
         data=df, categorical_vars=category_cols, output_path=output_path
     )
+
     # Create correlation plot
-    print(f"Creating correlation chart")
+    print(f"-- Creating correlation chart")
     chart_correlation(data=df, output_path=output_path)
 
     # Create Density plot
-    print(f"Creating density chart")
+    print(f"-- Creating density chart")
     density_plot(data=df, output_path=output_path)
-
-    print(f"End of EDA")
-
-
-def test_eda_charts(input_path, output_path):
-    """Test for input data type.
-
-    Parameters
-    ----------
-    input_path : str
-        Path of the data file to carry out the EDA
-    output_path : str
-        Path of the folder to save the charts
-    """
-
-    df = pd.read_csv(input_path)
-    assert isinstance(df, pd.DataFrame), "Error in df type"
 
 
 if __name__ == "__main__":
-    test_eda_charts(opt["--input_path"], opt["--output_path"])
     main(opt["--input_path"], opt["--output_path"])
