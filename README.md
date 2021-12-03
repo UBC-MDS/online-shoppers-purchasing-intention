@@ -82,19 +82,19 @@ To replicate this analysis, clone this GitHub repository, install the dependenci
 ```
 The suggested way to run this analysis is as below:
 # download data
-src/download_data.py --url=https://archive.ics.uci.edu/ml/machine-learning-databases/00468/online_shoppers_intention.csv --out_path=data/raw/online_shoppers_intention.csv
+python src/download_data.py --url=https://archive.ics.uci.edu/ml/machine-learning-databases/00468/online_shoppers_intention.csv --out_path=data/raw/online_shoppers_intention.csv
 
 # pre-process data
-src/data_preprocess.py --input_path=data/raw/online_shoppers_intention.csv --output_path=data/processed/ --test_size=0.2
+python src/data_preprocess.py --input_path=data/raw/online_shoppers_intention.csv --output_path=data/processed/ --test_size=0.2
 
 # create explanatory data analysis figures and write to file
-src/eda_charts.py --input_path=data/processed/train-eda.csv --output_path=results/
+python src/eda_charts.py --input_path=data/processed/train-eda.csv --output_path=results/
 
 # model selection
-src/ml_modelling.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=results/
+python src/model_selection.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=results/
 
 # tune model
-src/tune_model.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=results/
+python src/tune_model.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=results/
 
 # render final report
 jupyter-book build -all reports/
