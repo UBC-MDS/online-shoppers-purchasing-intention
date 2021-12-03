@@ -13,15 +13,15 @@ reports/images/chart_target_distribution.png reports/images/chart_numeric_var_di
 	python src/eda_charts.py --input_path=data/processed/train-eda.csv --output_path=reports/images/
 
 # model selection
-reports/images/model_selection_results.html reports/images/DummyClassifier_cm.png reports/images/RandomForest_cm.png reports/images/LogisticRegression_cm.png reports/images/SVC_cm.png reports/images/XGBoost_cm.png : src/model_selection.py data/processed/train.csv data/processed/test.csv
-	python src/model_selection.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=reports/images/
+results/model_selection_results.csv reports/images/DummyClassifier_cm.png reports/images/RandomForest_cm.png reports/images/LogisticRegression_cm.png reports/images/SVC_cm.png reports/images/XGBoost_cm.png : src/model_selection.py data/processed/train.csv data/processed/test.csv
+	python src/model_selection.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path_images=reports/images/ --output_path_csv=results/model_selection_results.csv
 
 # tune model
-reports/images/Final_Classification_Report.html reports/images/Final_RandomForest_cm.png : src/tune_model.py data/processed/train.csv data/processed/test.csv
-	python src/tune_model.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path=reports/images/
+results/classification_report.csv reports/images/Final_RandomForest_cm.png : src/tune_model.py data/processed/train.csv data/processed/test.csv
+	python src/tune_model.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path_images=reports/images/ --output_path_csv=results/classification_report.csv
 
 # generate jupyter book
-reports/_build/ : reports/images/model_selection_results.html reports/images/DummyClassifier_cm.png reports/images/RandomForest_cm.png reports/images/LogisticRegression_cm.png reports/images/SVC_cm.png reports/images/XGBoost_cm.png reports/images/Final_Classification_Report.html reports/images/Final_RandomForest_cm.png reports/images/chart_target_distribution.png reports/images/chart_numeric_var_distribution.png reports/images/chart_correlation.png reports/images/chart_density.png
+reports/_build/ : results/model_selection_results.csv reports/images/DummyClassifier_cm.png reports/images/RandomForest_cm.png reports/images/LogisticRegression_cm.png reports/images/SVC_cm.png reports/images/XGBoost_cm.png results/classification_report.csv reports/images/Final_RandomForest_cm.png reports/images/chart_target_distribution.png reports/images/chart_numeric_var_distribution.png reports/images/chart_correlation.png reports/images/chart_density.png
 	jupyter-book build --all reports/
 
 # copy files from _build to docs/
@@ -33,6 +33,6 @@ clean:
 	rm -f data/raw/*.csv
 	rm -f data/processed/*.csv
 	rm -f reports/images/*.png
-	rm -f reports/images/*.html
+	rm -f results/*.csv
 	rm -rf reports/_build/*
 	rm -rf docs/*

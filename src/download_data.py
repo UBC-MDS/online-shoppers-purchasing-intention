@@ -35,4 +35,5 @@ def main(url, out_path):
 
 
 if __name__ == "__main__":
+    print("-- Downloading data")
     main(opt["--url"], opt["--out_path"])

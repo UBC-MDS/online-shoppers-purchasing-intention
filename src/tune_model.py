@@ -7,12 +7,13 @@
 Tunes the hyperparameters for our best model, in this case Random Forest.
 Outputs the best performing model.
 
-Usage: src/tune_model.py [--train=<train>] [--test=<test>] [--output_path=<output_path>]
+Usage: src/tune_model.py [--train=<train>] [--test=<test>] [--output_path_images=<output_path_images>] [--output_path_csv=<output_path_csv>]
 
 Options:
 --train=<train>                 File path of the train data [default: data/processed/train.csv]
 --test=<test>                   File path of the test data [default: data/processed/test.csv]
---output_path=<output_path>     Folder path where to write results [default: results/]
+--output_path_images=<output_path_images>     Folder path where to write images [default: reports/images/]
+--output_path_csv=<output_path_csv>     Folder path where to write csv results [default: results/classification_report.csv]
 """
 
 
@@ -23,12 +24,7 @@ from scipy.stats import randint
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
-from model_selection import (
-    read_cleaned_data,
-    get_X_y,
-    get_styled_df_html,
-    write_df_html,
-)
+from model_selection import read_cleaned_data, get_X_y
 
 
 opt = docopt(__doc__)
@@ -58,7 +54,7 @@ def create_model_and_params():
 
 
 def perform_random_search(
-    X_train, y_train, model, search_space, n_iter=1, scoring="recall"
+    X_train, y_train, model, search_space, n_iter=100, scoring="recall"
 ):
     """Performs random search cross validation.
 
@@ -156,7 +152,7 @@ def get_final_predictions(model, X_train, y_train, X_test, y_test):
     return cm_plot, cr_df
 
 
-def main(train, test, output_path):
+def main(train, test, output_path_images, output_path_csv):
     """Main function that performs hyperparameter tuning and outputs the results.
 
     Parameters
@@ -165,8 +161,10 @@ def main(train, test, output_path):
         Input path for train data from docopt
     test : str
         Input path for train data from docopt
-    output_path : str
-        Output folder path to save results
+    output_path_images : str
+        Output folder path to save images
+    output_path_csv : str
+        Output folder path to save csv results
     """
 
     print("-- Reading in clean data")
@@ -187,20 +185,18 @@ def main(train, test, output_path):
         results["best_estimator"], X_train, y_train, X_test, y_test
     )
 
-    print("-- Output results (html) and images")
-    cm_plot.savefig(f"{output_path}Final_RandomForest_cm.png", bbox_inches="tight")
-
-    styled_results_df_html = get_styled_df_html(
-        cr_df,
-        round_num=True,
-        digits=3,
+    print("-- Output results and images")
+    cm_plot.savefig(
+        f"{output_path_images}Final_RandomForest_cm.png", bbox_inches="tight"
     )
 
-    write_df_html(
-        styled_results_df_html,
-        f"{output_path}Final_Classification_Report",
-    )
+    cr_df.to_csv(output_path_csv)
 
 
 if __name__ == "__main__":
-    main(opt["--train"], opt["--test"], opt["--output_path"])
+    main(
+        opt["--train"],
+        opt["--test"],
+        opt["--output_path_images"],
+        opt["--output_path_csv"],
+    )

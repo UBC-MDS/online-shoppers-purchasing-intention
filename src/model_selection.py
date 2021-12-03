@@ -8,12 +8,13 @@ Reads in the pre-processed train and test data.  Splits this data into X and y a
 Cross validates a selection of machine learning models and outputs the results of 
 cross validation along with confusion matrices.
 
-Usage: src/ml_modelling.py [--train=<train>] [--test=<test>] [--output_path=<output_path>]
+Usage: src/model_selection.py [--train=<train>] [--test=<test>] [--output_path_images=<output_path_images>] [--output_path_csv=<output_path_csv>]
 
 Options:
 --train=<train>                 File path of the train data [default: data/processed/train.csv]
 --test=<test>                   File path of the test data [default: data/processed/test.csv]
---output_path=<output_path>     Folder path where to write results [default: results/]
+--output_path_images=<output_path_images>     Folder path where to write images [default: reports/images/]
+--output_path_csv=<output_path_csv>     Folder path where to write csv results [default: results/model_selection_results.csv]
 """
 
 
@@ -202,66 +203,7 @@ def get_confusion_matrices(models, X_train, y_train):
     return cm_figures
 
 
-def get_styled_df_html(df, round_num=False, digits=None):
-    """Returns the html code for a styled pandas DataFrame
-
-    Parameters
-    ----------
-    df : pandas DataFrame
-        The DataFrame to obtain the styled html code for
-    round_num : bool, optional
-        Whether or not to round the numbers in the DataFrame, by default False
-    digits : int or None, optional
-        The number of digits to round to, by default None
-
-    Returns
-    -------
-    str
-        The html code for the styled dataframe
-    """
-
-    # css formatters for cell highlights, index and header colours
-    cell_hover = {"selector": "td:hover", "props": [("background-color", "#ffffb3")]}
-
-    index_names = {
-        "selector": ".index_name",
-        "props": "font-style: italic; color: darkgrey; font-weight:normal;",
-    }
-
-    headers = {
-        "selector": "th:not(.index_name)",
-        "props": "background-color: #000066; color: white;",
-    }
-
-    if round_num:
-        fmt = "{:." + str(digits) + "f}"
-        styled_df = df.style.format(fmt)
-    else:
-        styled_df = df.style.format()
-
-    # apply css and get html code
-    styled_df.set_table_styles([cell_hover, index_names, headers])
-    styled_df_html = styled_df.to_html()
-
-    return styled_df_html
-
-
-def write_df_html(styled_df_html, filename):
-    """Writes the html code for a style Pandas Dataframe to a .html file.
-
-    Parameters
-    ----------
-    styled_df_html : str
-        The html code to write to a file
-    filename : str
-        The name of the .html file (do not include .html in this)
-    """
-    file = open(f"{filename}.html", "w")
-    file.write(styled_df_html)
-    file.close()
-
-
-def main(train, test, output_path):
+def main(train, test, output_path_images, output_path_csv):
     """Main function that performs model selection and outputs the results.
 
     Parameters
@@ -270,8 +212,10 @@ def main(train, test, output_path):
         Input path for train data from docopt
     test : str
         Input path for train data from docopt
-    output_path : str
-        Output folder path to save results
+    output_path_images : str
+        Output folder path to save images
+    output_path_csv : str
+        Output folder path to save csv results
     """
 
     # train and test data
@@ -293,16 +237,20 @@ def main(train, test, output_path):
     print("-- Creating confusion matrices")
     cm_figures = get_confusion_matrices(models, X_train, y_train)
 
-    print("-- Output results (html) and images")
+    print("-- Output results and images")
     # output results
-    styled_results_df_html = get_styled_df_html(results_df)
-    write_df_html(styled_results_df_html, f"{output_path}model_selection_results")
+    results_df.to_csv(output_path_csv)
 
     # output cm images
     for model, figure in cm_figures.items():
-        name = f"{output_path}{model}_cm.png"
+        name = f"{output_path_images}{model}_cm.png"
         figure.savefig(name, bbox_inches="tight")
 
 
 if __name__ == "__main__":
-    main(opt["--train"], opt["--test"], opt["--output_path"])
+    main(
+        opt["--train"],
+        opt["--test"],
+        opt["--output_path_images"],
+        opt["--output_path_csv"],
+    )

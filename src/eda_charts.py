@@ -10,7 +10,7 @@ Usage: src/eda_charts.py [--input_path=<input_path>] [--output_path=<output_path
 
 Options:
 --input_path=<input_path>          Input file path  [default: data/processed/train-eda.csv].
---output_path=<output_path>        Folder path (exclude filename) of where to locally write the EDA charts in png format [default: results/].
+--output_path=<output_path>        Folder path (exclude filename) of where to locally write the EDA charts in png format [default: reports/images/]
 """
 
 from docopt import docopt
