@@ -1,9 +1,10 @@
 # author: Ting Zhe Yan
 # created: 2021-11-23
-# last updated on: 2021-11-23
+# last updated on: 2021-12-03
 # last updated by: Nico Van den Hooff
 
-"""Reads the raw data and performs and data cleaning/pre-processing, 
+"""
+Reads the raw data and performs and data cleaning/pre-processing, 
 transforming, and/or paritionting that needs to happen before exploratory data analysis 
 or modeling takes place
 
@@ -37,7 +38,6 @@ def read_data(input_path):
     pandas.DataFrame
         Input as a pandas dataframe
     """
-    print("-- Read data..")
     df = pd.read_csv(input_path)
     return df
 
@@ -55,10 +55,8 @@ def clean_data(df):
     pandas.DataFrame
         Cleaned dataframe
     """
-    print("-- Clean data")
     # 'Jun' is spelt as 'June' in raw data
     df["Month"] = df["Month"].replace("June", "Jun")
-
     df["Revenue"] = df["Revenue"].astype("int64")
 
     return df
@@ -82,7 +80,6 @@ def train_test_split(df, test_size):
     list
         List containing train & test split
     """
-    print("-- Split data into train/test")
     months = [
         "Jan",
         "Feb",
@@ -97,6 +94,7 @@ def train_test_split(df, test_size):
         "Nov",
         "Dec",
     ]
+
     # Sort by month
     df["Month"] = pd.Categorical(df["Month"], categories=months, ordered=True)
     df = df.sort_values("Month")
@@ -124,15 +122,16 @@ def feat_engineer(df):
     pd.DataFrame
         Dataframe with new features
     """
-    print("-- Feature Engineering")
     df["total_page_view"] = (
         df["Administrative"] + df["Informational"] + df["ProductRelated"]
     )
+
     df["total_duration"] = (
         df["Administrative_Duration"]
         + df["Informational_Duration"]
         + df["ProductRelated_Duration"]
     )
+
     df["product_view_percent"] = df["ProductRelated"] / df["total_page_view"]
     df["product_dur_percent"] = df["ProductRelated_Duration"] / df["total_duration"]
     df["ave_product_duration"] = df["ProductRelated_Duration"] / df["ProductRelated"]
@@ -157,89 +156,17 @@ def feat_engineer(df):
     return df
 
 
-# Dictionary of features type for transformation
-feat_type = {
-    "numeric": [
-        "Administrative",
-        "Administrative_Duration",
-        "Informational",
-        "Informational_Duration",
-        "ProductRelated",
-        "ProductRelated_Duration",
-        "BounceRates",
-        "ExitRates",
-        "PageValues",
-        "SpecialDay",
-        "total_page_view",
-        "total_duration",
-        "product_view_percent",
-        "product_dur_percent",
-        "ave_product_duration",
-        "page_values_x_bounce_rate",
-        "page_values_per_product_view",
-        "page_values_per_product_dur",
-    ],
-    "category": ["OperatingSystems", "Browser", "Region", "TrafficType", "VisitorType"],
-    "binary": ["Weekend"],
-    "drop": ["Month"],
-    "target": ["Revenue"],
-}
-
-
-def get_transformer():
-    """Get Column Transformer for feature transformation
+def get_feat_type():
+    """Gets the feature types
 
     Returns
     -------
-    ColumnTransformer
-        Returns a ColumnTransformer object
+    dict
+        Dictionary of feature types
     """
-    print("-- Get Column Transformer")
-
-    ct = make_column_transformer(
-        (StandardScaler(), feat_type["numeric"]),
-        (OneHotEncoder(sparse=False), feat_type["category"]),
-        (OneHotEncoder(sparse=False, drop="if_binary"), feat_type["binary"]),
-        ("drop", feat_type["drop"]),
-        remainder="passthrough",
-    )
-
-    return ct
-
-
-# TODO: move tests into a separate files
-def test_function():
-    """Test functions in data_preprocess.py"""
-    print("====Test===")
-    # train_test_split
-    df1 = pd.DataFrame(
-        {
-            "row": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            "Month": [
-                "Jan",
-                "Feb",
-                "Dec",
-                "Dec",
-                "Mar",
-                "Jan",
-                "Jan",
-                "Jan",
-                "Jan",
-                "Jan",
-            ],
-        }
-    )
-    assert len(train_test_split(df1, 0.2)[1]) == 2, "Error in train_test_split"
-    assert train_test_split(df1, 0.2)[1].iloc[0, 0] == 3, "Error in train_test_split"
-
-    # clean_data
-    df2 = pd.DataFrame({"Month": ["June"], "Revenue": 1})
-    assert clean_data(df2).iloc[0, 0] == "Jun", "Error in clean_data"
-
-    # feat_engineer
-    df3 = pd.DataFrame(
-        [[0, 0, 0, 0, 0, 0, 0, 0, 100, 1, "Feb", 1, 1, 1, 1, "TRUE", "FALSE", "FALSE"]],
-        columns=[
+    # Dictionary of features type for transformation
+    feat_type = {
+        "numeric": [
             "Administrative",
             "Administrative_Duration",
             "Informational",
@@ -250,21 +177,49 @@ def test_function():
             "ExitRates",
             "PageValues",
             "SpecialDay",
-            "Month",
+            "total_page_view",
+            "total_duration",
+            "product_view_percent",
+            "product_dur_percent",
+            "ave_product_duration",
+            "page_values_x_bounce_rate",
+            "page_values_per_product_view",
+            "page_values_per_product_dur",
+        ],
+        "category": [
             "OperatingSystems",
             "Browser",
             "Region",
             "TrafficType",
             "VisitorType",
-            "Weekend",
-            "Revenue",
         ],
-    )
-    assert (
-        feat_engineer(df3).isnull().values.any() == False
-    ), "Error in fill na in feat_engineer"
+        "binary": ["Weekend"],
+        "drop": ["Month"],
+        "target": ["Revenue"],
+    }
 
-    print("====Test Ends===")
+    return feat_type
+
+
+def get_transformer():
+    """Get Column Transformer for feature transformation
+
+    Returns
+    -------
+    ColumnTransformer
+        Returns a ColumnTransformer object
+    """
+    feat_type = get_feat_type()
+
+    ct = make_column_transformer(
+        (StandardScaler(), feat_type["numeric"]),
+        (OneHotEncoder(sparse=False), feat_type["category"]),
+        (OneHotEncoder(sparse=False, drop="if_binary"), feat_type["binary"]),
+        ("drop", feat_type["drop"]),
+        remainder="passthrough",
+    )
+
+    return ct
 
 
 def main(input_path, output_path, test_size):
@@ -282,21 +237,26 @@ def main(input_path, output_path, test_size):
     test_size : string
         Test data proportion from docopt
     """
-    # Run test function
-    test_function()
 
     test_size = float(test_size)
 
     # Read raw data
+    print("-- Read data")
     df = read_data(input_path)
 
     # Data cleaning
+    print("-- Clean data")
     df = clean_data(df)
 
     # Train / Test Split
+    print("-- Split data into train/test")
     train, test = train_test_split(df, test_size=test_size)
 
+    # Feature types
+    feat_type = get_feat_type()
+
     # Feature Engineering
+    print("-- Feature Engineering")
     train = feat_engineer(train)
     test = feat_engineer(test)
 
@@ -307,15 +267,19 @@ def main(input_path, output_path, test_size):
 
     # Transformation
     # TODO: what to do with outliers?
+    print("-- Transforming data")
     ct = get_transformer()
     train_np = ct.fit_transform(train)
     test_np = ct.transform(test)
+
+    # Create feature matrix with column names
     col_name = (
         feat_type["numeric"]
         + ct.named_transformers_["onehotencoder-1"].get_feature_names_out().tolist()
         + ct.named_transformers_["onehotencoder-2"].get_feature_names_out().tolist()
         + feat_type["target"]
     )
+
     train = pd.DataFrame(train_np, columns=col_name)
     test = pd.DataFrame(test_np, columns=col_name)
 
