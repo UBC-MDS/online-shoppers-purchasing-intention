@@ -77,11 +77,18 @@ We have published a copy of our analysis in the form of a [Jupyter Book](https:/
 
 ## Usage
 
-To replicate this analysis, clone this GitHub repository, install the dependencies listed below, and run the following commands at the command line/terminal from the root directory of this project:
+To replicate this analysis, clone this GitHub repository, install the dependencies listed below, and run the following command at the command line/terminal from the root directory of this project:
 
 ```
 make all
 ```
+
+To restore the repo to a clean state, with no intermediate or result files, run the following command at the command line/terminal from the root directory of this project:
+
+```
+make clean
+```
+
 <!-- 
 ```
 The suggested way to run this analysis is as below:
