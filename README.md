@@ -80,6 +80,10 @@ We have published a copy of our analysis in the form of a [Jupyter Book](https:/
 To replicate this analysis, clone this GitHub repository, install the dependencies listed below, and run the following commands at the command line/terminal from the root directory of this project:
 
 ```
+make all
+```
+<!-- 
+```
 The suggested way to run this analysis is as below:
 # download data
 python src/download_data.py --url=https://archive.ics.uci.edu/ml/machine-learning-databases/00468/online_shoppers_intention.csv --out_path=data/raw/online_shoppers_intention.csv
@@ -98,7 +102,7 @@ python src/tune_model.py --train=data/processed/train.csv --test=data/processed/
 
 # render final report
 jupyter-book build -all reports/
-```
+``` -->
 
 ## Dependencies
 

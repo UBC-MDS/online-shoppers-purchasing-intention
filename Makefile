@@ -1,4 +1,4 @@
-all : reports/_build/
+all : docs/
 
 # download data
 data/raw/online_shoppers_intention.csv : src/download_data.py
@@ -24,6 +24,10 @@ reports/images/Final_Classification_Report.html reports/images/Final_RandomFores
 reports/_build/ : reports/images/model_selection_results.html reports/images/DummyClassifier_cm.png reports/images/RandomForest_cm.png reports/images/LogisticRegression_cm.png reports/images/SVC_cm.png reports/images/XGBoost_cm.png reports/images/Final_Classification_Report.html reports/images/Final_RandomForest_cm.png reports/images/chart_target_distribution.png reports/images/chart_numeric_var_distribution.png reports/images/chart_correlation.png reports/images/chart_density.png
 	jupyter-book build --all reports/
 
+# copy files from _build to docs/
+docs/ : reports/_build/
+	cp -a reports/_build/html/. docs/
+
 # clean up intermediate and results files
 clean:
 	rm -f data/raw/*.csv
@@ -31,3 +35,4 @@ clean:
 	rm -f reports/images/*.png
 	rm -f reports/images/*.html
 	rm -rf reports/_build/*
+	rm -rf docs/*
