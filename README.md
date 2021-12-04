@@ -76,7 +76,7 @@ We have published a copy of our analysis in the form of a [Jupyter Book](https:/
 
 ## Usage
 
-To replicate this analysis, clone this GitHub repository, install the dependencies listed below, either manually or by using conda as below:
+To replicate this analysis, clone this GitHub repository, install the dependencies listed below, either manually or by using conda as below. The conda environment file can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/blob/main/environment.yml).
 
 ```
 conda env create -f environment.yaml
