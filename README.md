@@ -46,7 +46,7 @@ Next, we will begin the process of model selection. We will train a baseline mod
 - A type I (false positive) error would be predicting that a customer will make a purchase, when they in fact do not.
 - A type II (false negative) error would be predicting that a customer will not make a purchase, when in fact they do.
 
-In determining the metric we use for our model, we need to consider the business objective of the e-commerce company. We assume that the company will have the following objectives: 
+In determining the metric we use for our model, we need to consider the business objective of the e-commerce company. We assume that the company will have the following objectives:
 
 1. Maximize revenue by increasing purchase conversion rate
 2. Minimize disruption to customer experience from targeted nudges
@@ -61,7 +61,7 @@ To date, we have:
 
 - Performed exploratory data analysis, which can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/tree/main/eda)
 - Written scripts to download data, preprocess data, produce EDA charts, for model selection, and for tuning our model, which can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/tree/main/src)
-- Completed a first draft of our report, in the form of a Jupyter Book, which can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/tree/main/reports)
+- Completed a second draft of our report, in the form of a Jupyter Book, which can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/tree/main/reports)
 - Automated our data analysis pipeline using Make
 
 ## Statement of future direction
@@ -69,6 +69,7 @@ To date, we have:
 In milestone 4 and forward we will focus on:
 
 - Using Docker to make our project reproducible on any machine that has Docker installed.
+- Continuing to iterate on our machine learning analysis if required
 
 ## Analysis
 

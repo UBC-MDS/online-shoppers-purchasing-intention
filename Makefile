@@ -17,11 +17,11 @@ results/model_selection_results.csv reports/images/model_cm.png.png reports/imag
 	python src/model_selection.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path_images=reports/images/ --output_path_csv=results/model_selection_results.csv
 
 # tune model
-results/classification_report.csv reports/images/Final_RandomForest_cm.png : src/tune_model.py data/processed/train.csv data/processed/test.csv
+results/classification_report.csv reports/images/final_RandomForest_cm.png : src/tune_model.py data/processed/train.csv data/processed/test.csv
 	python src/tune_model.py --train=data/processed/train.csv --test=data/processed/test.csv --output_path_images=reports/images/ --output_path_csv=results/classification_report.csv
 
 # generate jupyter book
-reports/_build/ : results/model_selection_results.csv reports/images/model_cm.png.png reports/images/model_pr_curves.png results/classification_report.csv reports/images/Final_RandomForest_cm.png reports/images/chart_target_distribution.png reports/images/chart_numeric_var_distribution.png reports/images/chart_correlation.png reports/images/chart_density.png
+reports/_build/ : results/model_selection_results.csv reports/images/model_cm.png.png reports/images/model_pr_curves.png results/classification_report.csv reports/images/final_RandomForest_cm.png reports/images/chart_target_distribution.png reports/images/chart_numeric_var_distribution.png reports/images/chart_correlation.png reports/images/chart_density.png
 	jupyter-book build --all reports/
 
 # automate copying files to docs/ for rendering the report on github.io
