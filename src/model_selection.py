@@ -184,8 +184,8 @@ def get_confusion_matrices(models, X_train, y_train):
 
     Returns
     -------
-    dict
-        A dictionary of confusion matrices in matplot lib figure form
+    Matplotlib figure
+        The confusion matrices
     """
 
     # to plot all confusion matrices together
@@ -217,6 +217,22 @@ def get_confusion_matrices(models, X_train, y_train):
 
 
 def get_precision_recall_curves(models, X_train, y_train):
+    """Calculates and returns the precision recall curves for a set of models.
+
+    Parameters
+    ----------
+    models : list
+        A list of sklearn estimators (also accepts xgb model)
+    X_train : numpy ndarray
+        The feature matrix
+    y_train : numpy ndarray
+        The target labels
+
+    Returns
+    -------
+    Matplotlib figure
+        The precision recall curves
+    """
 
     fig, ax = plt.subplots(figsize=(7, 5), dpi=100)
 
