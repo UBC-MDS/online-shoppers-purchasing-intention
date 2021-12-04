@@ -179,18 +179,23 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#imbalanced-dataset">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#importance-of-page-values">
+   Importance of Page Values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#correlation-plot-of-the-dataset">
    Correlation plot of the dataset
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#distribution-of-the-numerical-variables">
-   Distribution of the numerical variables
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#target-distribution">
-   Target distribution
+  <a class="reference internal nav-link" href="#right-skewed-feature-distribution">
+   Right-skewed feature distribution
   </a>
  </li>
 </ul>
@@ -206,25 +211,28 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="data-analysis">
 <h1>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h1>
-<p>The data consists of numeric and categorical features. Amongst these features, “BounceRates”, “ExitRates” and “PageValues” features represent the metrics measured by “Google Analytics” for each page in the e-commerce site. We have mentioned below the key observations from studying the correlation in the data:</p>
-<ul class="simple">
-<li><p>“BounceRates” and “ExitRates” are similar to each other.</p></li>
-<li><p>Sessions with high BounceRates have less webpage interaction and less sales</p></li>
-<li><p>“PageValues” could be an important feature. It has positive correlation with “Revenue”, and is the most direct feature linking to Revenue.</p></li>
-</ul>
+<p>The data consists of numeric and categorical features. Amongst these features, “BounceRates”, “ExitRates” and “PageValues” features represent the metrics measured by “Google Analytics” for each session on the e-commerce site. Below are key observations from our data analysis:</p>
+<div class="section" id="imbalanced-dataset">
+<h2>Imbalanced Dataset<a class="headerlink" href="#imbalanced-dataset" title="Permalink to this headline">¶</a></h2>
+<p><img alt="distribution_target_plot" src="_images/chart_target_distribution.png" /></p>
+<p>This dataset is imbalanced, where only 15% of sessions ended in a purchase. While 15% is not extremely imbalanced, we can still explore methods or algorithms that are better at dealing with an imbalanced dataset.</p>
+</div>
+<div class="section" id="importance-of-page-values">
+<h2>Importance of Page Values<a class="headerlink" href="#importance-of-page-values" title="Permalink to this headline">¶</a></h2>
+<p><img alt="density_plot" src="_images/chart_density.png" /></p>
+<p><code class="docutils literal notranslate"><span class="pre">PageValues</span></code> is defined as the average page value of the pages visited by the user. In an e-commerce context, values are normally assigned to important pages such as checkout pages, or pages preceding the checkout process. As seen from the figure above, having a <code class="docutils literal notranslate"><span class="pre">PageValues</span></code> of above 5 increases the likelihood of purchase conversion. Hence, this <code class="docutils literal notranslate"><span class="pre">PageValues</span></code> feature provides a strong signal on whether the user will make a purchase or not.</p>
+</div>
 <div class="section" id="correlation-plot-of-the-dataset">
 <h2>Correlation plot of the dataset<a class="headerlink" href="#correlation-plot-of-the-dataset" title="Permalink to this headline">¶</a></h2>
 <p><img alt="correlation_plot" src="_images/chart_correlation.png" /></p>
-<p>We looked at the distribution of the numeric features, but this analysis proved inconclusive.</p>
+<p>Based on the above insight on <code class="docutils literal notranslate"><span class="pre">PageValues</span></code>, we looked at the correlation between numeric features to find whether other features are strongly correlated with <code class="docutils literal notranslate"><span class="pre">PageValues</span></code>.</p>
+<p>We see that higher pageview and longer browsing duration have a positive correlation with <code class="docutils literal notranslate"><span class="pre">PageValues</span></code>. This is intuitive, as higher pageview and longer browsing duration indicate high engagement from the user. For example, if a user already had an item in mind, they might spend more time on an e-commerce website to compare prices reviews of similar products. A highly engaged user will be more likely to purchase than a passive user.</p>
+<p>Another feature of interest is <code class="docutils literal notranslate"><span class="pre">ExitRates</span></code>, which is negatively correlated with <code class="docutils literal notranslate"><span class="pre">PageValues</span></code>. <code class="docutils literal notranslate"><span class="pre">ExitRates</span></code> is defined as the average exit rate of the pages visited by the user. <code class="docutils literal notranslate"><span class="pre">ExitRates</span></code> is also positively correlated with <code class="docutils literal notranslate"><span class="pre">BounceRates</span></code>. This finding fits well in our ‘engaged user’ hypothesis: sessions with high <code class="docutils literal notranslate"><span class="pre">ExitRates</span></code> or <code class="docutils literal notranslate"><span class="pre">BounceRates</span></code> indicate a less engaged user, resulting in fewer purchase conversions.</p>
 </div>
-<div class="section" id="distribution-of-the-numerical-variables">
-<h2>Distribution of the numerical variables<a class="headerlink" href="#distribution-of-the-numerical-variables" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="right-skewed-feature-distribution">
+<h2>Right-skewed feature distribution<a class="headerlink" href="#right-skewed-feature-distribution" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we also noted that many numeric features are right-skewed with long tails. This is common in e-commerce settings, whereby some users have extremely high usage statistics. We can experiment with the removal of outliers, or feature transformation such as Box-Cox, and see whether it will help in model performance.</p>
 <p><img alt="distribution_numerical_vars_plot" src="_images/chart_numeric_var_distribution.png" /></p>
-<p>Finally, we have highlighted below the imbalance in the taget variable. As mentioned in the data set introduction, 85% of the sessions contain a <code class="docutils literal notranslate"><span class="pre">False</span></code> class label, with the remaining 15% containing a <code class="docutils literal notranslate"><span class="pre">True</span></code> label</p>
-</div>
-<div class="section" id="target-distribution">
-<h2>Target distribution<a class="headerlink" href="#target-distribution" title="Permalink to this headline">¶</a></h2>
-<p><img alt="distribution_target_plot" src="_images/chart_target_distribution.png" /></p>
 </div>
 </div>
 
