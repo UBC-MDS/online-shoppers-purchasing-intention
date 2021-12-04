@@ -62,14 +62,13 @@ To date, we have:
 - Performed exploratory data analysis, which can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/tree/main/eda)
 - Written scripts to download data, preprocess data, produce EDA charts, for model selection, and for tuning our model, which can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/tree/main/src)
 - Completed a first draft of our report, in the form of a Jupyter Book, which can be found [here](https://github.com/UBC-MDS/online-shoppers-purchasing-intention/tree/main/reports)
+- Automated our data analysis pipeline using Make
 
 ## Statement of future direction
 
-In milestone 3 and forward we will focus on:
+In milestone 4 and forward we will focus on:
 
-- Automating our pipeline
-- Dealing with the class imbalance in our data
-- Automating our jupyter book images further (right now the html is directly embedded)
+- Using Docker to make our project reproducible on any machine that has Docker installed.
 
 ## Analysis
 
@@ -77,7 +76,14 @@ We have published a copy of our analysis in the form of a [Jupyter Book](https:/
 
 ## Usage
 
-To replicate this analysis, clone this GitHub repository, install the dependencies listed below, and run the following command at the command line/terminal from the root directory of this project:
+To replicate this analysis, clone this GitHub repository, install the dependencies listed below, either manually or by using conda as below:
+
+```
+conda env create -f environment.yaml
+conda activate project_env
+```
+
+After installing the dependencies, run the following command at the command line/terminal from the root directory of this project:
 
 ```
 make all
@@ -126,6 +132,7 @@ Python 3.9 and Python packages
 - altair-data-server==0.4.1
 - ipykernel
 - jupyter-book
+- matplotlib=3.5.0 
 
 ## License
 
