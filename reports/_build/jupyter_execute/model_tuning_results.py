@@ -54,7 +54,7 @@ import pandas as pd
 
 # ### Confusion matrix
 
-# ![RandomForestFinal](images/final_RandomForest_cm.png)
+# ![RandomForestFinal](images/Final_RandomForest_cm.png)
 
 # ### Classification report
 
