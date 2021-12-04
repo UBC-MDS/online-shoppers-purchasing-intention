@@ -92,7 +92,7 @@ def get_models():
     models = {
         "DummyClassifier": DummyClassifier(),
         "LogisticRegression": LogisticRegression(max_iter=1500),  # helps convergence
-        "SVC": SVC(),
+        "SVC": SVC(probability=True),
         "RandomForest": RandomForestClassifier(),
         "XGBoost": xgb.XGBClassifier(use_label_encoder=False, eval_metric="logloss"),
     }
@@ -226,7 +226,9 @@ def get_precision_recall_curves(models, X_train, y_train):
             continue
 
         else:
-            y_pred = cross_val_predict(model, X_train, y_train)
+            y_pred = cross_val_predict(model, X_train, y_train, method="predict_proba")[
+                :, 1
+            ]
 
             # creates base confusion matrix plot
             PrecisionRecallDisplay.from_predictions(y_train, y_pred, ax=ax, name=name)
