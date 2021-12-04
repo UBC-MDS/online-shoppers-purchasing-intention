@@ -211,13 +211,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#cross-validation-results">
-   Cross validation results
+  <a class="reference internal nav-link" href="#cross-validation">
+   Cross validation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#preliminary-confusion-matrices">
-   Preliminary confusion matrices
+  <a class="reference internal nav-link" href="#confusion-matrices">
+   Confusion matrices
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#precision-recall-curves">
+   Precision Recall Curves
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -245,163 +250,199 @@
 <li><p>A type I (false positive) error would be predicting that a customer will make a purchase, when they in fact do not.</p></li>
 <li><p>A type II (false negative) error would be predicting that a customer will not make a purchase, when in fact they do.</p></li>
 </ul>
-<p>In determining the metric we use for our model, we need to consider the business objective of the e-commerce company. We assume that the company will have the following objectives: 1) maximize revenue by increasing purchase conversion rate, and 2) minimize disruption to customer experience from targeted nudges.</p>
-<p>Based on this, we can use precision, recall, and average precision. To be more specific, we want to maximize recall, while keeping a minimum threshold of 60% precision (threshold based on business requirement and tolerance). Average precision will be a secondary metric to monitor, since we are interested in both precision and recall.</p>
+<p>Further, we need to consider the business objective of an e-commerce company who would potentially be using this model. We assume that the company will have the following objectives:</p>
+<ol class="simple">
+<li><p>Maximize revenue by increasing purchase conversion rate</p></li>
+<li><p>Minimize disruption to customer experience from targeted nudges</p></li>
+</ol>
+<p>Based on this, we note that relevant metrics include precision, recall, and average precision. To be more specific, we want to maximize recall, while keeping a minimum threshold of 60% precision (threshold based on business requirement and tolerance). Average precision will be a secondary metric to monitor, since we are interested in both precision and recall.</p>
 </div>
 <div class="section" id="base-model">
 <h2>Base model<a class="headerlink" href="#base-model" title="Permalink to this headline">¶</a></h2>
-<p>Our based model will be the <code class="docutils literal notranslate"><span class="pre">DummyClassifier</span></code> model from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> with the default parameters.  From the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html">documentation</a>, the default <code class="docutils literal notranslate"><span class="pre">strategy</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">prior</span></code> which always predicts the class that maximizes the class prior (like “most_frequent”) and predict_proba returns the class prior.</p>
+<p>Our baseline model will be the <code class="docutils literal notranslate"><span class="pre">DummyClassifier</span></code> model from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> with the default parameters.  From the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html">documentation</a>, the default <code class="docutils literal notranslate"><span class="pre">strategy</span></code> parameter is <code class="docutils literal notranslate"><span class="pre">prior</span></code> which always predicts the class that maximizes the class prior (like “most_frequent”) and predict_proba returns the class prior.</p>
 </div>
 <div class="section" id="additional-models-tested">
 <h2>Additional models tested<a class="headerlink" href="#additional-models-tested" title="Permalink to this headline">¶</a></h2>
-<p>In performing model selection, we will fit the following models to our training data, and use cross validation to assess which model to select for further hyperparameter tuning:</p>
+<p>In performing model selection, we will also consider and fit the following models to our training data:</p>
 <ul class="simple">
 <li><p>Logistic Regression</p></li>
 <li><p>Support Vector Machine w/ RBF kernl</p></li>
 <li><p>Random Forest Classifier</p></li>
 <li><p>XGBoost Classifier</p></li>
 </ul>
+<p>In assessing these models, we will also consider:</p>
+<ol class="simple">
+<li><p>Five fold cross validation results</p></li>
+<li><p>Confuision matrices generated with cross validated predictions on the train set</p></li>
+<li><p>Precision recall curves generated with cross validated predictions on the train set</p></li>
+</ol>
 </div>
-<div class="section" id="cross-validation-results">
-<h2>Cross validation results<a class="headerlink" href="#cross-validation-results" title="Permalink to this headline">¶</a></h2>
-<p>We performed 5 fold cross validation for the above models on our training data and observed the following metrics.  Please note that the following scores are the mean values over the 5 folds of cross validation:</p>
+<div class="section" id="cross-validation">
+<h2>Cross validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">¶</a></h2>
+<p>We performed 5 fold cross validation for the above models on our training data and observed the following metrics:</p>
+<p><em>Please note that the following metrics are the mean values over the 5 folds of cross validation</em></p>
 <div class="cell tag_remove_input docutils container">
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
+<div class="output text_html"><style type="text/css">
+#T_dffe4_ td:hover {
+  background-color: #ffffb3;
+}
+#T_dffe4_ .index_name {
+  font-style: italic;
+  color: darkgrey;
+  font-weight: normal;
+}
+#T_dffe4_ th:not(.index_name) {
+  background-color: #000066;
+  color: white;
+}
 </style>
-<table border="1" class="dataframe">
+<table id="T_dffe4_">
   <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>DummyClassifier</th>
-      <th>LogisticRegression</th>
-      <th>SVC</th>
-      <th>RandomForest</th>
-      <th>XGBoost</th>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >DummyClassifier</th>
+      <th class="col_heading level0 col1" >LogisticRegression</th>
+      <th class="col_heading level0 col2" >SVC</th>
+      <th class="col_heading level0 col3" >RandomForest</th>
+      <th class="col_heading level0 col4" >XGBoost</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>fit_time</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.20 (+/- 0.01)</td>
-      <td>1.19 (+/- 0.15)</td>
-      <td>0.71 (+/- 0.03)</td>
-      <td>0.60 (+/- 0.01)</td>
+      <th id="T_dffe4_level0_row0" class="row_heading level0 row0" >fit_time</th>
+      <td id="T_dffe4_row0_col0" class="data row0 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row0_col1" class="data row0 col1" >0.22 (+/- 0.01)</td>
+      <td id="T_dffe4_row0_col2" class="data row0 col2" >1.23 (+/- 0.17)</td>
+      <td id="T_dffe4_row0_col3" class="data row0 col3" >0.76 (+/- 0.04)</td>
+      <td id="T_dffe4_row0_col4" class="data row0 col4" >0.64 (+/- 0.01)</td>
     </tr>
     <tr>
-      <th>score_time</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.01 (+/- 0.00)</td>
-      <td>0.73 (+/- 0.09)</td>
-      <td>0.03 (+/- 0.00)</td>
-      <td>0.01 (+/- 0.00)</td>
+      <th id="T_dffe4_level0_row1" class="row_heading level0 row1" >score_time</th>
+      <td id="T_dffe4_row1_col0" class="data row1 col0" >0.01 (+/- 0.00)</td>
+      <td id="T_dffe4_row1_col1" class="data row1 col1" >0.01 (+/- 0.00)</td>
+      <td id="T_dffe4_row1_col2" class="data row1 col2" >1.47 (+/- 0.10)</td>
+      <td id="T_dffe4_row1_col3" class="data row1 col3" >0.06 (+/- 0.00)</td>
+      <td id="T_dffe4_row1_col4" class="data row1 col4" >0.01 (+/- 0.00)</td>
     </tr>
     <tr>
-      <th>test_accuracy</th>
-      <td>0.85 (+/- 0.00)</td>
-      <td>0.88 (+/- 0.02)</td>
-      <td>0.89 (+/- 0.03)</td>
-      <td>0.89 (+/- 0.03)</td>
-      <td>0.88 (+/- 0.04)</td>
+      <th id="T_dffe4_level0_row2" class="row_heading level0 row2" >test_accuracy</th>
+      <td id="T_dffe4_row2_col0" class="data row2 col0" >0.85 (+/- 0.00)</td>
+      <td id="T_dffe4_row2_col1" class="data row2 col1" >0.88 (+/- 0.02)</td>
+      <td id="T_dffe4_row2_col2" class="data row2 col2" >0.89 (+/- 0.03)</td>
+      <td id="T_dffe4_row2_col3" class="data row2 col3" >0.89 (+/- 0.03)</td>
+      <td id="T_dffe4_row2_col4" class="data row2 col4" >0.88 (+/- 0.04)</td>
     </tr>
     <tr>
-      <th>train_accuracy</th>
-      <td>0.85 (+/- 0.00)</td>
-      <td>0.89 (+/- 0.01)</td>
-      <td>0.91 (+/- 0.01)</td>
-      <td>1.00 (+/- 0.00)</td>
-      <td>0.99 (+/- 0.00)</td>
+      <th id="T_dffe4_level0_row3" class="row_heading level0 row3" >train_accuracy</th>
+      <td id="T_dffe4_row3_col0" class="data row3 col0" >0.85 (+/- 0.00)</td>
+      <td id="T_dffe4_row3_col1" class="data row3 col1" >0.89 (+/- 0.01)</td>
+      <td id="T_dffe4_row3_col2" class="data row3 col2" >0.91 (+/- 0.01)</td>
+      <td id="T_dffe4_row3_col3" class="data row3 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row3_col4" class="data row3 col4" >0.99 (+/- 0.00)</td>
     </tr>
     <tr>
-      <th>test_precision</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.73 (+/- 0.15)</td>
-      <td>0.71 (+/- 0.13)</td>
-      <td>0.69 (+/- 0.13)</td>
-      <td>0.65 (+/- 0.16)</td>
+      <th id="T_dffe4_level0_row4" class="row_heading level0 row4" >test_precision</th>
+      <td id="T_dffe4_row4_col0" class="data row4 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row4_col1" class="data row4 col1" >0.73 (+/- 0.15)</td>
+      <td id="T_dffe4_row4_col2" class="data row4 col2" >0.71 (+/- 0.13)</td>
+      <td id="T_dffe4_row4_col3" class="data row4 col3" >0.68 (+/- 0.12)</td>
+      <td id="T_dffe4_row4_col4" class="data row4 col4" >0.65 (+/- 0.16)</td>
     </tr>
     <tr>
-      <th>train_precision</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.77 (+/- 0.02)</td>
-      <td>0.78 (+/- 0.01)</td>
-      <td>1.00 (+/- 0.00)</td>
-      <td>1.00 (+/- 0.00)</td>
+      <th id="T_dffe4_level0_row5" class="row_heading level0 row5" >train_precision</th>
+      <td id="T_dffe4_row5_col0" class="data row5 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row5_col1" class="data row5 col1" >0.77 (+/- 0.02)</td>
+      <td id="T_dffe4_row5_col2" class="data row5 col2" >0.78 (+/- 0.01)</td>
+      <td id="T_dffe4_row5_col3" class="data row5 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row5_col4" class="data row5 col4" >1.00 (+/- 0.00)</td>
     </tr>
     <tr>
-      <th>test_recall</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.38 (+/- 0.08)</td>
-      <td>0.48 (+/- 0.11)</td>
-      <td>0.55 (+/- 0.12)</td>
-      <td>0.56 (+/- 0.12)</td>
+      <th id="T_dffe4_level0_row6" class="row_heading level0 row6" >test_recall</th>
+      <td id="T_dffe4_row6_col0" class="data row6 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row6_col1" class="data row6 col1" >0.38 (+/- 0.08)</td>
+      <td id="T_dffe4_row6_col2" class="data row6 col2" >0.48 (+/- 0.11)</td>
+      <td id="T_dffe4_row6_col3" class="data row6 col3" >0.56 (+/- 0.13)</td>
+      <td id="T_dffe4_row6_col4" class="data row6 col4" >0.56 (+/- 0.12)</td>
     </tr>
     <tr>
-      <th>train_recall</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.41 (+/- 0.04)</td>
-      <td>0.55 (+/- 0.07)</td>
-      <td>1.00 (+/- 0.00)</td>
-      <td>0.94 (+/- 0.02)</td>
+      <th id="T_dffe4_level0_row7" class="row_heading level0 row7" >train_recall</th>
+      <td id="T_dffe4_row7_col0" class="data row7 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row7_col1" class="data row7 col1" >0.41 (+/- 0.04)</td>
+      <td id="T_dffe4_row7_col2" class="data row7 col2" >0.55 (+/- 0.07)</td>
+      <td id="T_dffe4_row7_col3" class="data row7 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row7_col4" class="data row7 col4" >0.94 (+/- 0.02)</td>
     </tr>
     <tr>
-      <th>test_f1</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.50 (+/- 0.10)</td>
-      <td>0.57 (+/- 0.12)</td>
-      <td>0.61 (+/- 0.12)</td>
-      <td>0.60 (+/- 0.13)</td>
+      <th id="T_dffe4_level0_row8" class="row_heading level0 row8" >test_f1</th>
+      <td id="T_dffe4_row8_col0" class="data row8 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row8_col1" class="data row8 col1" >0.50 (+/- 0.10)</td>
+      <td id="T_dffe4_row8_col2" class="data row8 col2" >0.57 (+/- 0.12)</td>
+      <td id="T_dffe4_row8_col3" class="data row8 col3" >0.61 (+/- 0.12)</td>
+      <td id="T_dffe4_row8_col4" class="data row8 col4" >0.60 (+/- 0.13)</td>
     </tr>
     <tr>
-      <th>train_f1</th>
-      <td>0.00 (+/- 0.00)</td>
-      <td>0.53 (+/- 0.04)</td>
-      <td>0.64 (+/- 0.05)</td>
-      <td>1.00 (+/- 0.00)</td>
-      <td>0.97 (+/- 0.01)</td>
+      <th id="T_dffe4_level0_row9" class="row_heading level0 row9" >train_f1</th>
+      <td id="T_dffe4_row9_col0" class="data row9 col0" >0.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row9_col1" class="data row9 col1" >0.53 (+/- 0.04)</td>
+      <td id="T_dffe4_row9_col2" class="data row9 col2" >0.64 (+/- 0.05)</td>
+      <td id="T_dffe4_row9_col3" class="data row9 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row9_col4" class="data row9 col4" >0.97 (+/- 0.01)</td>
+    </tr>
+    <tr>
+      <th id="T_dffe4_level0_row10" class="row_heading level0 row10" >test_average_precision</th>
+      <td id="T_dffe4_row10_col0" class="data row10 col0" >0.15 (+/- 0.00)</td>
+      <td id="T_dffe4_row10_col1" class="data row10 col1" >0.61 (+/- 0.14)</td>
+      <td id="T_dffe4_row10_col2" class="data row10 col2" >0.65 (+/- 0.17)</td>
+      <td id="T_dffe4_row10_col3" class="data row10 col3" >0.68 (+/- 0.17)</td>
+      <td id="T_dffe4_row10_col4" class="data row10 col4" >0.65 (+/- 0.18)</td>
+    </tr>
+    <tr>
+      <th id="T_dffe4_level0_row11" class="row_heading level0 row11" >train_average_precision</th>
+      <td id="T_dffe4_row11_col0" class="data row11 col0" >0.15 (+/- 0.00)</td>
+      <td id="T_dffe4_row11_col1" class="data row11 col1" >0.67 (+/- 0.04)</td>
+      <td id="T_dffe4_row11_col2" class="data row11 col2" >0.78 (+/- 0.03)</td>
+      <td id="T_dffe4_row11_col3" class="data row11 col3" >1.00 (+/- 0.00)</td>
+      <td id="T_dffe4_row11_col4" class="data row11 col4" >1.00 (+/- 0.00)</td>
     </tr>
   </tbody>
 </table>
-</div></div></div>
+</div></div>
 </div>
-<p>From the above we can see that:</p>
+<p>From the above we can see that the:</p>
 <ul class="simple">
-<li><p>The logistic regression model had the best precision scores on the validation tests during cross validation.  However, the recall scores of this model were quite poor.</p></li>
-<li><p>The support vector machine had similar precision scores to the logistic regression model, and slightly better recall scores.</p></li>
-<li><p>The random forest model and XGBoost models both severely overfit the training set, which can be seen by perfrect accuracy and precision scores.  However, the recall scores on the test set of these models are still higher than the logistic regression and support vector machine models.</p></li>
+<li><p>Logistic regression model had the best precision scores on the validation tests during cross validation.  However, the recall scores of this model were quite poor.</p></li>
+<li><p>Support vector machine had similar precision scores to the logistic regression model, and slightly better recall scores.</p></li>
+<li><p>Random forest model and XGBoost models both severely overfit the training set, which can be seen by perfrect accuracy and precision scores.  However, the recall scores on the test set of these models are still higher than the logistic regression and support vector machine models.  We note that it is common for ensemble models to overfit without hyperparameter tuning.</p></li>
 <li><p>The F1 scores of the models are consistent with the analysis above.</p></li>
+<li><p>The Random forest model has the highest average precision on the validation sets.</p></li>
 </ul>
+<p>Based on the above results, the Random Forest model or XGBoost model look promising.</p>
 </div>
-<div class="section" id="preliminary-confusion-matrices">
-<h2>Preliminary confusion matrices<a class="headerlink" href="#preliminary-confusion-matrices" title="Permalink to this headline">¶</a></h2>
-<p>In addition we used sklearns <code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code> to generate the following preliminary confusion matrices:</p>
-<p><img alt="DummyClassifier" src="_images/DummyClassifier_cm.png" /></p>
-<p>The dummy classifier confusion matrix simply serves as a baseline.</p>
-<p><img alt="LogisticRegression" src="_images/LogisticRegression_cm.png" /></p>
-<p>The logistic regression model is outputing 220 false positives, and 927 false negatives.</p>
-<p><img alt="SVC" src="_images/SVC_cm.png" /></p>
-<p>The support vector machine is outputing 286 false positives, and 777 false negatives.</p>
-<p><img alt="RandomForest" src="_images/RandomForest_cm.png" /></p>
-<p>The random forest is outputing 388 false positives, and 666 false negatives.</p>
-<p><img alt="XGBoost" src="_images/XGBoost_cm.png" /></p>
-<p>The XGBoost model is outputing 478 false positives, and 657 false negatives.</p>
+<div class="section" id="confusion-matrices">
+<h2>Confusion matrices<a class="headerlink" href="#confusion-matrices" title="Permalink to this headline">¶</a></h2>
+<p>We used sklearn’s <code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code> with <code class="docutils literal notranslate"><span class="pre">ConfusionMatrixDisplay.from_predictions</span></code> to generate the following confusion matrices:</p>
+<p><img alt="ConfusionMatrix" src="_images/model_cm.png" /></p>
+<p>From the confusion matrices above, we can see that the:</p>
+<ul class="simple">
+<li><p>Logistic regression model is outputing 220 false positives, and 927 false negatives.</p></li>
+<li><p>Support vector machine is outputing 286 false positives, and 777 false negatives.</p></li>
+<li><p>Random forest is outputing 388 false positives, and 669 false negatives.</p></li>
+<li><p>XGBoost model is outputing 478 false positives, and 657 false negatives.</p></li>
+</ul>
+<p>Considering our goals of maximizing recall, with a budget of of 60% for precision, the random forest and XGBoost model both look promising based on the confusion matrices.</p>
+</div>
+<div class="section" id="precision-recall-curves">
+<h2>Precision Recall Curves<a class="headerlink" href="#precision-recall-curves" title="Permalink to this headline">¶</a></h2>
+<p>We used sklearn’s <code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code> with <code class="docutils literal notranslate"><span class="pre">PrecisionRecallDisplay.from_predictions</span></code> to generate the following plot:</p>
+<p><img alt="PRCurves" src="_images/model_pr_curves.png" /></p>
+<p>With precision recall curves, a high area under the curve represnts both high precision and recall.  The precision recall curves appear to show the same trend as the CV results and confusion matrices, which is that the Random forest and XGBoost models look the most promising.</p>
 </div>
 <div class="section" id="id1">
 <h2>Model selection<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>We note that the above results were obtained with no hyperparameter tuning.  Based on these results alone, we can see that the random forest appears to be a promising model for our problem.  We will therefore select this model to tune further.  Random forests tend to be a great model for classification problems as they inject randomness into a probelm in the form of bagging and random features <span id="id2">[<a class="reference internal" href="intro.html#id11">Breiman, 2001</a>]</span>.</p>
+<p>Above, we analyzed what can be considered “quick and dirty” models, where we simply analyze models results on a feature matrix with no hyperparameter tuning.  The main purpose of training such models is to identify a promising model(s) for our problem to refine further.</p>
+<p>Based on these results alone, it appears that the random forest and XGBoost models did the best with no tuning at all.  We note that both these models are ensemble models, and share some similarities.  As our dataset is not that large, we will select the Random forest model to tune further.</p>
+<p>Finally, we note that Random forests are often a great model for classification problems as they inject randomness into a problem in the form of bagging and random features <span id="id2">[<a class="reference internal" href="intro.html#id11">Breiman, 2001</a>]</span>.</p>
 </div>
 </div>
 
