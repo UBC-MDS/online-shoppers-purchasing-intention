@@ -12,8 +12,6 @@ import pandas as pd
 # ## Hyperparameter tuning
 
 # We tuned the following hyperparameters of the Random Forest classifier:
-# 
-# (The below is a summary of the detailed discussion of the hyperparameters on sk-learns website {cite}`scikit-learn`)
 
 # ### `n_estimators`
 
@@ -46,6 +44,8 @@ import pandas as pd
 
 # This hyperparameter can be used to deal with the imbalance in our training data.  Specifically, this hyper parameter controls the weights associated with each class.  We tested `balanced` which uses the values of our target label to automatically adjust weights inversely proportional to class frequencies as `n_samples / (n_classes * np.bincount(y))`
 
+# For a full list of hyperparameters please see sk-learn's [documentation](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html).
+
 # ### Randomized search cross validation
 
 # In order to tune the hyperparameters of our model we used randomized search cross validation.  We set a budget of 100 models to train.
@@ -54,7 +54,7 @@ import pandas as pd
 
 # ### Confusion matrix
 
-# ![RandomForestFinal](images/Final_RandomForest_cm.png)
+# ![RandomForestFinal](images/final_RandomForest_cm.png)
 
 # ### Classification report
 
@@ -62,9 +62,34 @@ import pandas as pd
 
 
 cr = pd.read_csv("../results/classification_report.csv", index_col=0)
-cr
+
+# set pandas table styles
+s = cr.style.format(
+    '{:.3f}'
+)
+
+cell_hover = { 
+    'selector': 'td:hover',
+    'props': [('background-color', '#ffffb3')]
+}
+
+index_names = {
+    'selector': '.index_name',
+    'props': 'font-style: italic; color: darkgrey; font-weight:normal;'
+}
+headers = {
+    'selector': 'th:not(.index_name)',
+    'props': 'background-color: #000066; color: white;'
+}
+
+s.set_table_styles([cell_hover, index_names, headers])
 
 
 # ## Discussion of results
 
-# The tuned random forest is outputing 268 false positives, and 88 false negatives.  The macro average recall score is 0.827 and the macro average precision score is 0.748, which is above our budget of 0.60 that we set at the beginning of our project.
+# Our tuned random forest has the following results on the test set:
+# 
+# - X true positives, and X true negatives
+# - 268 false positives, and 88 false negatives
+# - A macro average recall score is 0.829 and the macro average precision score is 0.750
+# - The macro average precision score is above our budget of 0.60 that we set at the beginning of our project
