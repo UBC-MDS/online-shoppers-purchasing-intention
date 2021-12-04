@@ -187,7 +187,7 @@ def main(train, test, output_path_images, output_path_csv):
 
     print("-- Output results and images")
     cm_plot.savefig(
-        f"{output_path_images}final_RandomForest_cm.png", bbox_inches="tight"
+        f"{output_path_images}Final_RandomForest_cm.png", bbox_inches="tight"
     )
 
     cr_df.to_csv(output_path_csv)
