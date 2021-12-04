@@ -21,12 +21,13 @@ Options:
 import warnings
 import pandas as pd
 import xgboost as xgb
+import matplotlib.pyplot as plt
 from docopt import docopt
 from sklearn.svm import SVC
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import ConfusionMatrixDisplay, PrecisionRecallDisplay
 from sklearn.model_selection import cross_validate, cross_val_predict
 from sklearn.exceptions import UndefinedMetricWarning
 
@@ -131,7 +132,11 @@ def get_mean_cv_scores(model, X_train, y_train, **kwargs):
 
 
 def cross_validate_models(
-    models, X_train, y_train, cv=5, metrics=["accuracy", "precision", "recall", "f1"]
+    models,
+    X_train,
+    y_train,
+    cv=5,
+    metrics=["accuracy", "precision", "recall", "f1", "average_precision"],
 ):
     """Performs cross validation for a set of models and returns results.
 
@@ -182,25 +187,54 @@ def get_confusion_matrices(models, X_train, y_train):
     dict
         A dictionary of confusion matrices in matplot lib figure form
     """
-    cm_figures = {}
+
+    # to plot all confusion matrices together
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(13, 10), dpi=100)
+
+    # None zips with DummyClassifier which is not plotted
+    axes = [None, ax1, ax2, ax3, ax4]
+    labels = ["No Purchase", "Purchase"]
+
+    for (name, model), ax in zip(models.items(), axes):
+
+        if name == "DummyClassifier":
+            continue
+
+        else:
+            y_pred = cross_val_predict(model, X_train, y_train)
+
+            # creates base confusion matrix plot
+            ConfusionMatrixDisplay.from_predictions(
+                y_train, y_pred, ax=ax, colorbar=False, display_labels=labels
+            )
+            # sets the title of the confusion matrix
+            ax.set_title(f"{name}")
+
+    # sets overall plot title
+    fig.suptitle("Model Confusion Matrices", y=0.94, fontsize=16)
+
+    return fig
+
+
+def get_precision_recall_curves(models, X_train, y_train):
+
+    fig, ax = plt.subplots(figsize=(7, 5), dpi=100)
 
     for name, model in models.items():
-        labels = ["No Purchase", "Purchase"]
 
-        y_pred = cross_val_predict(model, X_train, y_train)
+        if name == "DummyClassifier":
+            continue
 
-        # creates base confusion matrix plot
-        cm = ConfusionMatrixDisplay.from_predictions(
-            y_train, y_pred, display_labels=labels
-        )
+        else:
+            y_pred = cross_val_predict(model, X_train, y_train)
 
-        # sets the title of the confusion matrix
-        cm.ax_.set_title(f"{name} Confusion Matrix")
+            # creates base confusion matrix plot
+            PrecisionRecallDisplay.from_predictions(y_train, y_pred, ax=ax, name=name)
 
-        # extracts and adds matplotlib figure to dictionary
-        cm_figures[name] = cm.figure_
+    ax.legend(loc="upper right")
+    ax.set_title("Precision recall curves", fontsize=15)
 
-    return cm_figures
+    return fig
 
 
 def main(train, test, output_path_images, output_path_csv):
@@ -235,16 +269,18 @@ def main(train, test, output_path_images, output_path_csv):
 
     # create confusion matrices
     print("-- Creating confusion matrices")
-    cm_figures = get_confusion_matrices(models, X_train, y_train)
+    cm_figure = get_confusion_matrices(models, X_train, y_train)
+
+    print("-- Creating PR curves")
+    pr_figure = get_precision_recall_curves(models, X_train, y_train)
 
     print("-- Output results and images")
     # output results
     results_df.to_csv(output_path_csv)
 
-    # output cm images
-    for model, figure in cm_figures.items():
-        name = f"{output_path_images}{model}_cm.png"
-        figure.savefig(name, bbox_inches="tight")
+    # output cm and pr images
+    cm_figure.savefig(f"{output_path_images}model_cm.png", bbox_inches="tight")
+    pr_figure.savefig(f"{output_path_images}model_pr_curves.png", bbox_inches="tight")
 
 
 if __name__ == "__main__":
