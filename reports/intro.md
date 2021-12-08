@@ -1,3 +1,6 @@
+# Online Shoppers Purchasing Intention
+Nico Van den Hooff, Ting Zhe (TZ) Yan, Arijeet Chatterjee
+
 # Introduction
 
 ## Research question
