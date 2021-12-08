@@ -1,7 +1,7 @@
-# docker file for the online shoppers purchasing intention project
-# authors: Nico Van den Hooff, TZ Yan, Arijeet Chatterjee
-# created: 2021-12-07
-# last updated: 2021-12-07
+# Docker file for the online shoppers purchasing intention project
+# Authors: Nico Van den Hooff, TZ Yan, Arijeet Chatterjee
+# Created: 2021-12-07
+# Last updated: 2021-12-07
 
 # base container for dockerfile
 ARG OWNER=jupyter
