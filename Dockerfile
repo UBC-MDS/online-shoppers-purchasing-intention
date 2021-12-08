@@ -4,9 +4,16 @@
 # Last updated: 2021-12-07
 
 # base container for dockerfile
-ARG OWNER=jupyter
-ARG BASE_CONTAINER=$OWNER/minimal-notebook
-FROM $BASE_CONTAINER
+FROM continuumio/miniconda3
+
+# update packages
+RUN apt-get update -y
+
+# install dev tools
+RUN apt-get install gcc python3-dev chromium-driver -y
+
+# install gnu make
+RUN apt-get install make -y
 
 # required python packages with conda install
 RUN conda install --quiet -y -c conda-forge \
