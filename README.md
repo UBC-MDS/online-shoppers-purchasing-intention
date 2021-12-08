@@ -53,16 +53,16 @@ You can automatically replicate our analysis by using one of the following two m
 
 First, install [Docker](https://www.docker.com/get-started).
 
-Then, run the following command at the command line (terminal) to replicate our analysis:
+Then, run the following command to reset our repository to a clean state, with no intermediate or results files:
 
-```
-$ to add docker command with make all
+```bash
+$ docker run --rm -v /$(pwd):/home/online-shoppers-purchasing-intention nicovandenhooff/online-shoppers-purchasing-intention make -C /home/online-shoppers-purchasing-intention clean
 ```
 
-If you wish, you can reset our repository to a clean state, with no intermediate or results files by running the following additional command:
+Finally, run the following command to replicate our analysis (note: this will take some time):
 
-```
-$ to add docker command with make clean
+```bash
+$ docker run --rm -v /$(pwd):/home/online-shoppers-purchasing-intention nicovandenhooff/online-shoppers-purchasing-intention make -C /home/online-shoppers-purchasing-intention all
 ```
 
 ### Method 2: Without using Docker
@@ -74,16 +74,16 @@ $ conda env create -f environment.yaml
 $ conda activate project_env
 ```
 
-Then, run the following command:
+Then, run the following command at the command line (terminal) to reset our repository to a clean state, with no intermediate or results files:
 
-```
-$ make all
-```
-
-If you wish, you can reset our repository to a clean state, with no intermediate or results files by running the following additional command:
-
-```
+```bash
 $ make clean
+```
+
+Finally, run the following command to replicate our analysis (note: this will take some time):
+
+```bash
+$ make all
 ```
 
 ## Makefile dependency graph
@@ -106,7 +106,6 @@ Python 3.9 and Python packages
 - altair_saver
 - altair-data-server==0.4.1
 - jupyter-book==0.12.1
-
 
 ## License
 
