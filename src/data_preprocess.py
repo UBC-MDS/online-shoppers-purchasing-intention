@@ -11,8 +11,8 @@ or modeling takes place
 Usage: src/data_preprocess.py [--input_path=<input_path>] [--output_path=<output_path>] [--test_size=<test_size>]
 
 Options:
---input_path=<input_path>    Input file path  [default: data/raw/online_shoppers_intention.csv].
---output_path=<output_path>  Folder path (exclude filename) of where to locally write the file [default: data/processed/].
+--input_path=<input_path>    Input path  [default: data/raw/].
+--output_path=<output_path>  Output path of where to write the file [default: data/processed/].
 --test_size=<test_size>      Proportion of dataset to be included in test split [default: 0.2].
 """
 
@@ -38,7 +38,7 @@ def read_data(input_path):
     pandas.DataFrame
         Input as a pandas dataframe
     """
-    df = pd.read_csv(input_path)
+    df = pd.read_csv(f"{input_path}online_shoppers_intention.csv")
     return df
 
 
@@ -263,7 +263,6 @@ def main(input_path, output_path, test_size):
     # Output pre-transformed data for EDA
     print("-- Output pre-transformed data for EDA")
     train.to_csv(output_path + "train-eda.csv", index=False)
-    test.to_csv(output_path + "test-eda.csv", index=False)
 
     # Transformation
     # TODO: what to do with outliers?

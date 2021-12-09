@@ -8,13 +8,11 @@ Reads in the pre-processed train and test data.  Splits this data into X and y a
 Cross validates a selection of machine learning models and outputs the results of 
 cross validation along with confusion matrices.
 
-Usage: src/model_selection.py [--train=<train>] [--test=<test>] [--output_path_images=<output_path_images>] [--output_path_csv=<output_path_csv>]
+Usage: src/model_selection.py [--data_path=<data_path>] [--output_path=<output_path>]
 
 Options:
---train=<train>                 File path of the train data [default: data/processed/train.csv]
---test=<test>                   File path of the test data [default: data/processed/test.csv]
---output_path_images=<output_path_images>     Folder path where to write images [default: reports/images/]
---output_path_csv=<output_path_csv>     Folder path where to write csv results [default: results/model_selection_results.csv]
+--data_path=<data_path>         Input path of the preprocessed data [default: data/processed/]
+--output_path=<output_path>     Output path of where to write results [default: results/model_selection/]
 """
 
 
@@ -37,23 +35,21 @@ opt = docopt(__doc__)
 warnings.filterwarnings(action="ignore", category=UndefinedMetricWarning)
 
 
-def read_cleaned_data(train, test):
+def read_cleaned_data(data_path):
     """Reads in train and test data and returns as pandas DataFrames.
 
     Parameters
     ----------
-    train : str
-        File path of the training data
-    test : str
-        File path of the test data
+    data : str
+        File path of the preprocessed data
 
     Returns
     -------
     tuple of pandas DataFrames
         The train and test pandas DataFrames
     """
-    train_df = pd.read_csv(train)
-    test_df = pd.read_csv(test)
+    train_df = pd.read_csv(f"{data_path}train.csv")
+    test_df = pd.read_csv(f"{data_path}test.csv")
 
     return train_df, test_df
 
@@ -255,24 +251,20 @@ def get_precision_recall_curves(models, X_train, y_train):
     return fig
 
 
-def main(train, test, output_path_images, output_path_csv):
+def main(data_path, output_path):
     """Main function that performs model selection and outputs the results.
 
     Parameters
     ----------
-    train : str
-        Input path for train data from docopt
-    test : str
-        Input path for train data from docopt
-    output_path_images : str
-        Output folder path to save images
-    output_path_csv : str
-        Output folder path to save csv results
+    data_path : str
+        Input path of the preprocessed data
+    output_path : str
+        Output path of where to write results
     """
 
     # train and test data
     print("-- Reading in clean data")
-    train_df, test_df = read_cleaned_data(train, test)
+    train_df, test_df = read_cleaned_data(data_path)
 
     print("-- Generating X and y array")
     X_train, _, y_train, _ = get_X_y(train_df, test_df)
@@ -294,17 +286,12 @@ def main(train, test, output_path_images, output_path_csv):
 
     print("-- Output results and images")
     # output results
-    results_df.to_csv(output_path_csv)
+    results_df.to_csv(f"{output_path}model_selection_results.csv")
 
     # output cm and pr images
-    cm_figure.savefig(f"{output_path_images}model_cm.png", bbox_inches="tight")
-    pr_figure.savefig(f"{output_path_images}model_pr_curves.png", bbox_inches="tight")
+    cm_figure.savefig(f"{output_path}model_cm.png", bbox_inches="tight")
+    pr_figure.savefig(f"{output_path}model_pr_curves.png", bbox_inches="tight")
 
 
 if __name__ == "__main__":
-    main(
-        opt["--train"],
-        opt["--test"],
-        opt["--output_path_images"],
-        opt["--output_path_csv"],
-    )
+    main(opt["--data_path"], opt["--output_path"])
