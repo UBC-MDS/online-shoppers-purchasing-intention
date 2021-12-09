@@ -9,8 +9,8 @@ Reads the pre-processed data and creates the charts for exploratory data analysi
 Usage: src/eda_charts.py [--input_path=<input_path>] [--output_path=<output_path>]
 
 Options:
---input_path=<input_path>          Input file path  [default: data/processed/train-eda.csv].
---output_path=<output_path>        Folder path (exclude filename) of where to locally write the EDA charts in png format [default: reports/images/]
+--input_path=<input_path>          Input path  [default: data/processed/].
+--output_path=<output_path>        Output path of where to locally write the EDA charts in png format [default: eda/figures/]
 """
 
 from docopt import docopt
@@ -201,7 +201,7 @@ def main(input_path, output_path):
         Path of the folder to save the charts
 
     """
-    df = pd.read_csv(input_path)
+    df = pd.read_csv(f"{input_path}train-eda.csv")
 
     # Change target_var back to categorical for EDA
     target_var = "Revenue"
