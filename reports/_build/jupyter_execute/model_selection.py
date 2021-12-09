@@ -51,7 +51,7 @@ import pandas as pd
 # In[2]:
 
 
-model_selection_results_df = pd.read_csv("../results/model_selection_results.csv", index_col=0)
+model_selection_results_df = pd.read_csv("../results/model_selection/model_selection_results.csv", index_col=0)
 
 # set pandas table styles
 s = model_selection_results_df.style

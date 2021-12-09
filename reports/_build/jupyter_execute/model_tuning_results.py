@@ -54,14 +54,14 @@ import pandas as pd
 
 # ### Confusion matrix
 
-# ![RandomForestFinal](images/Final_RandomForest_cm.png)
+# ![RandomForestFinal](images/final_cm.png)
 
 # ### Classification report
 
 # In[2]:
 
 
-cr = pd.read_csv("../results/classification_report.csv", index_col=0)
+cr = pd.read_csv("../results/model_tuning/classification_report.csv", index_col=0)
 
 # set pandas table styles
 s = cr.style.format(
