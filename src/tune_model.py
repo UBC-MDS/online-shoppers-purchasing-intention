@@ -31,33 +31,6 @@ from sklearn.pipeline import make_pipeline
 opt = docopt(__doc__)
 
 
-def create_model_and_params():
-    """Creates the model to tune along with the hyperparameter search space.
-
-    Returns
-    -------
-    RandomForestClassifier, dict
-        The model to tune and a dictionary of the hyperparameter search space
-    """
-    model = RandomForestClassifier()
-
-    search_space = {
-        "randomforestclassifier__n_estimators": randint(100, 1000),
-        "randomforestclassifier__criterion": ["gini", "entropy"],
-        "randomforestclassifier__max_depth": np.arange(10, 100, 5),
-        "randomforestclassifier__max_features": ["auto", "log2"],
-        "randomforestclassifier__min_samples_split": [2, 4, 8],
-        "randomforestclassifier__min_samples_leaf": [1, 2, 4],
-        "randomforestclassifier__class_weight": [
-            "balanced",
-            "balanced_subsample",
-            None,
-        ],
-    }
-
-    return model, search_space
-
-
 def get_feat_type():
     """Gets the feature types
 
@@ -127,6 +100,35 @@ def get_transformer():
     return ct
 
 
+def create_model_and_params():
+    """Creates the model to tune along with the hyperparameter search space.
+
+    Returns
+    -------
+    RandomForestClassifier, dict
+        The model to tune and a dictionary of the hyperparameter search space
+    """
+    ct = get_transformer()
+
+    model = make_pipeline(ct, RandomForestClassifier())
+
+    search_space = {
+        "randomforestclassifier__n_estimators": randint(100, 1000),
+        "randomforestclassifier__criterion": ["gini", "entropy"],
+        "randomforestclassifier__max_depth": np.arange(10, 100, 5),
+        "randomforestclassifier__max_features": ["auto", "log2"],
+        "randomforestclassifier__min_samples_split": [2, 4, 8],
+        "randomforestclassifier__min_samples_leaf": [1, 2, 4],
+        "randomforestclassifier__class_weight": [
+            "balanced",
+            "balanced_subsample",
+            None,
+        ],
+    }
+
+    return model, search_space
+
+
 def perform_random_search(
     X_train, y_train, model, search_space, n_iter=100, scoring="recall"
 ):
@@ -152,10 +154,9 @@ def perform_random_search(
     RandomizedSearchCV
         The fit sklearn RandomizedSearchCV object
     """
-    ct = get_transformer()
 
     random_search = RandomizedSearchCV(
-        make_pipeline(ct, model),
+        model,
         search_space,
         n_iter=n_iter,
         scoring=scoring,
