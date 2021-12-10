@@ -42,13 +42,17 @@ def create_model_and_params():
     model = RandomForestClassifier()
 
     search_space = {
-        "n_estimators": randint(100, 1000),
-        "criterion": ["gini", "entropy"],
-        "max_depth": np.arange(10, 100, 5),
-        "max_features": ["auto", "log2"],
-        "min_samples_split": [2, 4, 8],
-        "min_samples_leaf": [1, 2, 4],
-        "class_weight": ["balanced", "balanced_subsample", None],
+        "randomforestclassifier__n_estimators": randint(100, 1000),
+        "randomforestclassifier__criterion": ["gini", "entropy"],
+        "randomforestclassifier__max_depth": np.arange(10, 100, 5),
+        "randomforestclassifier__max_features": ["auto", "log2"],
+        "randomforestclassifier__min_samples_split": [2, 4, 8],
+        "randomforestclassifier__min_samples_leaf": [1, 2, 4],
+        "randomforestclassifier__class_weight": [
+            "balanced",
+            "balanced_subsample",
+            None,
+        ],
     }
 
     return model, search_space
@@ -111,8 +115,11 @@ def get_transformer():
 
     ct = make_column_transformer(
         (StandardScaler(), feat_type["numeric"]),
-        (OneHotEncoder(sparse=False), feat_type["category"]),
-        (OneHotEncoder(sparse=False, drop="if_binary"), feat_type["binary"]),
+        (OneHotEncoder(sparse=False, handle_unknown="ignore"), feat_type["category"]),
+        (
+            OneHotEncoder(sparse=False, drop="if_binary", handle_unknown="ignore"),
+            feat_type["binary"],
+        ),
         ("drop", feat_type["drop"]),
         remainder="passthrough",
     )

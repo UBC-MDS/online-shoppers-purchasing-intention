@@ -213,8 +213,11 @@ def get_transformer():
 
     ct = make_column_transformer(
         (StandardScaler(), feat_type["numeric"]),
-        (OneHotEncoder(sparse=False), feat_type["category"]),
-        (OneHotEncoder(sparse=False, drop="if_binary"), feat_type["binary"]),
+        (OneHotEncoder(sparse=False, handle_unknown="ignore"), feat_type["category"]),
+        (
+            OneHotEncoder(sparse=False, drop="if_binary", handle_unknown="ignore"),
+            feat_type["binary"],
+        ),
         ("drop", feat_type["drop"]),
         remainder="passthrough",
     )
