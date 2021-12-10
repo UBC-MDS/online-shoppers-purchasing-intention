@@ -30,6 +30,7 @@ from sklearn.model_selection import cross_validate, cross_val_predict
 from sklearn.exceptions import UndefinedMetricWarning
 from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import make_pipeline
 
 opt = docopt(__doc__)
 
@@ -153,12 +154,18 @@ def get_models():
     dict :
         Dictionary of model instances.
     """
+    ct = get_transformer()
+
     models = {
-        "DummyClassifier": DummyClassifier(),
-        "LogisticRegression": LogisticRegression(max_iter=1500),  # helps convergence
-        "SVC": SVC(probability=True),
-        "RandomForest": RandomForestClassifier(),
-        "XGBoost": xgb.XGBClassifier(use_label_encoder=False, eval_metric="logloss"),
+        "DummyClassifier": make_pipeline(ct, DummyClassifier()),
+        "LogisticRegression": make_pipeline(
+            ct, LogisticRegression(max_iter=1500)
+        ),  # helps convergence
+        "SVC": make_pipeline(ct, SVC(probability=True)),
+        "RandomForest": make_pipeline(ct, RandomForestClassifier()),
+        "XGBoost": make_pipeline(
+            ct, xgb.XGBClassifier(use_label_encoder=False, eval_metric="logloss")
+        ),
     }
 
     return models
