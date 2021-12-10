@@ -23,6 +23,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
 from model_selection import read_cleaned_data, get_X_y
+from sklearn.compose import make_column_transformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import make_pipeline
 
 
 opt = docopt(__doc__)
@@ -51,6 +54,72 @@ def create_model_and_params():
     return model, search_space
 
 
+def get_feat_type():
+    """Gets the feature types
+
+    Returns
+    -------
+    dict
+        Dictionary of feature types
+    """
+    # Dictionary of features type for transformation
+    feat_type = {
+        "numeric": [
+            "Administrative",
+            "Administrative_Duration",
+            "Informational",
+            "Informational_Duration",
+            "ProductRelated",
+            "ProductRelated_Duration",
+            "BounceRates",
+            "ExitRates",
+            "PageValues",
+            "SpecialDay",
+            "total_page_view",
+            "total_duration",
+            "product_view_percent",
+            "product_dur_percent",
+            "ave_product_duration",
+            "page_values_x_bounce_rate",
+            "page_values_per_product_view",
+            "page_values_per_product_dur",
+        ],
+        "category": [
+            "OperatingSystems",
+            "Browser",
+            "Region",
+            "TrafficType",
+            "VisitorType",
+        ],
+        "binary": ["Weekend"],
+        "drop": ["Month"],
+        "target": ["Revenue"],
+    }
+
+    return feat_type
+
+
+def get_transformer():
+    """Get Column Transformer for feature transformation
+
+    Returns
+    -------
+    ColumnTransformer
+        Returns a ColumnTransformer object
+    """
+    feat_type = get_feat_type()
+
+    ct = make_column_transformer(
+        (StandardScaler(), feat_type["numeric"]),
+        (OneHotEncoder(sparse=False), feat_type["category"]),
+        (OneHotEncoder(sparse=False, drop="if_binary"), feat_type["binary"]),
+        ("drop", feat_type["drop"]),
+        remainder="passthrough",
+    )
+
+    return ct
+
+
 def perform_random_search(
     X_train, y_train, model, search_space, n_iter=100, scoring="recall"
 ):
@@ -76,8 +145,10 @@ def perform_random_search(
     RandomizedSearchCV
         The fit sklearn RandomizedSearchCV object
     """
+    ct = get_transformer()
+
     random_search = RandomizedSearchCV(
-        model,
+        make_pipeline(ct, model),
         search_space,
         n_iter=n_iter,
         scoring=scoring,
