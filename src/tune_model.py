@@ -23,9 +23,81 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
 from model_selection import read_cleaned_data, get_X_y
+from sklearn.compose import make_column_transformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import make_pipeline
 
 
 opt = docopt(__doc__)
+
+
+def get_feat_type():
+    """Gets the feature types
+
+    Returns
+    -------
+    dict
+        Dictionary of feature types
+    """
+    # Dictionary of features type for transformation
+    feat_type = {
+        "numeric": [
+            "Administrative",
+            "Administrative_Duration",
+            "Informational",
+            "Informational_Duration",
+            "ProductRelated",
+            "ProductRelated_Duration",
+            "BounceRates",
+            "ExitRates",
+            "PageValues",
+            "SpecialDay",
+            "total_page_view",
+            "total_duration",
+            "product_view_percent",
+            "product_dur_percent",
+            "ave_product_duration",
+            "page_values_x_bounce_rate",
+            "page_values_per_product_view",
+            "page_values_per_product_dur",
+        ],
+        "category": [
+            "OperatingSystems",
+            "Browser",
+            "Region",
+            "TrafficType",
+            "VisitorType",
+        ],
+        "binary": ["Weekend"],
+        "drop": ["Month"],
+        "target": ["Revenue"],
+    }
+
+    return feat_type
+
+
+def get_transformer():
+    """Get Column Transformer for feature transformation
+
+    Returns
+    -------
+    ColumnTransformer
+        Returns a ColumnTransformer object
+    """
+    feat_type = get_feat_type()
+
+    ct = make_column_transformer(
+        (StandardScaler(), feat_type["numeric"]),
+        (OneHotEncoder(sparse=False, handle_unknown="ignore"), feat_type["category"]),
+        (
+            OneHotEncoder(sparse=False, drop="if_binary", handle_unknown="ignore"),
+            feat_type["binary"],
+        ),
+        ("drop", feat_type["drop"]),
+        remainder="passthrough",
+    )
+
+    return ct
 
 
 def create_model_and_params():
@@ -36,16 +108,22 @@ def create_model_and_params():
     RandomForestClassifier, dict
         The model to tune and a dictionary of the hyperparameter search space
     """
-    model = RandomForestClassifier()
+    ct = get_transformer()
+
+    model = make_pipeline(ct, RandomForestClassifier())
 
     search_space = {
-        "n_estimators": randint(100, 1000),
-        "criterion": ["gini", "entropy"],
-        "max_depth": np.arange(10, 100, 5),
-        "max_features": ["auto", "log2"],
-        "min_samples_split": [2, 4, 8],
-        "min_samples_leaf": [1, 2, 4],
-        "class_weight": ["balanced", "balanced_subsample", None],
+        "randomforestclassifier__n_estimators": randint(100, 1000),
+        "randomforestclassifier__criterion": ["gini", "entropy"],
+        "randomforestclassifier__max_depth": np.arange(10, 100, 5),
+        "randomforestclassifier__max_features": ["auto", "log2"],
+        "randomforestclassifier__min_samples_split": [2, 4, 8],
+        "randomforestclassifier__min_samples_leaf": [1, 2, 4],
+        "randomforestclassifier__class_weight": [
+            "balanced",
+            "balanced_subsample",
+            None,
+        ],
     }
 
     return model, search_space
@@ -76,6 +154,7 @@ def perform_random_search(
     RandomizedSearchCV
         The fit sklearn RandomizedSearchCV object
     """
+
     random_search = RandomizedSearchCV(
         model,
         search_space,

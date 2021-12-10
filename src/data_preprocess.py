@@ -213,8 +213,11 @@ def get_transformer():
 
     ct = make_column_transformer(
         (StandardScaler(), feat_type["numeric"]),
-        (OneHotEncoder(sparse=False), feat_type["category"]),
-        (OneHotEncoder(sparse=False, drop="if_binary"), feat_type["binary"]),
+        (OneHotEncoder(sparse=False, handle_unknown="ignore"), feat_type["category"]),
+        (
+            OneHotEncoder(sparse=False, drop="if_binary", handle_unknown="ignore"),
+            feat_type["binary"],
+        ),
         ("drop", feat_type["drop"]),
         remainder="passthrough",
     )
@@ -263,24 +266,6 @@ def main(input_path, output_path, test_size):
     # Output pre-transformed data for EDA
     print("-- Output pre-transformed data for EDA")
     train.to_csv(output_path + "train-eda.csv", index=False)
-
-    # Transformation
-    # TODO: what to do with outliers?
-    print("-- Transforming data")
-    ct = get_transformer()
-    train_np = ct.fit_transform(train)
-    test_np = ct.transform(test)
-
-    # Create feature matrix with column names
-    col_name = (
-        feat_type["numeric"]
-        + ct.named_transformers_["onehotencoder-1"].get_feature_names_out().tolist()
-        + ct.named_transformers_["onehotencoder-2"].get_feature_names_out().tolist()
-        + feat_type["target"]
-    )
-
-    train = pd.DataFrame(train_np, columns=col_name)
-    test = pd.DataFrame(test_np, columns=col_name)
 
     # Output
     print("-- Output clean data")
