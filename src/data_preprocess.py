@@ -265,10 +265,9 @@ def main(input_path, output_path, test_size):
     train.to_csv(output_path + "train-eda.csv", index=False)
 
     # Transformation
-    # TODO: what to do with outliers?
     print("-- Transforming data")
     ct = get_transformer()
-    train_np = ct.fit_transform(train)
+    _ = ct.fit_transform(train)
     test_np = ct.transform(test)
 
     # Create feature matrix with column names
@@ -279,7 +278,7 @@ def main(input_path, output_path, test_size):
         + feat_type["target"]
     )
 
-    train = pd.DataFrame(train_np, columns=col_name)
+    # Only transform test. train will be transformed in model_selection.py
     test = pd.DataFrame(test_np, columns=col_name)
 
     # Output
