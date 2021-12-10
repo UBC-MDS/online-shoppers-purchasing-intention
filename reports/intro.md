@@ -29,7 +29,7 @@ The target feature and class label in the dataset is called `Revenue` and contai
 
 The dataset has good data quality in general. It is in a tidy format {cite}`wickham2014tidy`, and does not contain `NULL` values. There are some minor issues with outliers, but we have decided not to handle them.
 
-Feature engineering is done to capture feature interactions, and aggregating common features. The table below list some of our new features:
+Feature engineering is done to capture feature interactions, and aggregating common features. In particular, we want to capture possible feature interactions with `PageValues`, which we think is important for this problem. Table 1 list some of our new features:
 
 | Feature Name          |      Description      |
 |-----------------------|-----------------------|
@@ -41,6 +41,8 @@ Feature engineering is done to capture feature interactions, and aggregating com
 | `page_values_x_bounce_rate`| `PageValues` $\times$ (1 - `BounceRates`) |
 | `page_values_per_product_view`| `PageValues` per `ProductRelated` page views |
 | `page_values_per_product_dur`| `PageValues` per `ProductRelated` page durations |
+<figcaption align = "center"><b>Table.1 - New features generated</b></figcaption>
+
 ## Bibliography
 
 ```{bibliography}
