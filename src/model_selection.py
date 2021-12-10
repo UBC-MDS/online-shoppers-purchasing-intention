@@ -28,6 +28,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import ConfusionMatrixDisplay, PrecisionRecallDisplay
 from sklearn.model_selection import cross_validate, cross_val_predict
 from sklearn.exceptions import UndefinedMetricWarning
+from sklearn.compose import make_column_transformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 opt = docopt(__doc__)
 
