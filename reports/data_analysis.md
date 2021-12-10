@@ -1,6 +1,12 @@
 # Data Analysis
 
-The data consists of numeric and categorical features. Amongst these features, "BounceRates", "ExitRates" and "PageValues" features represent the metrics measured by "Google Analytics" for each session on the e-commerce site. Below are key observations from our data analysis:
+The data consists of numeric and categorical features. Amongst these features, "BounceRates", "ExitRates" and "PageValues" features represent the metrics measured by "Google Analytics" for each session on the e-commerce site. The key observations from our data analysis are:
+
+1. Our dataset is imbalanced, where only 15% of sessions ended in a purchase
+
+2. `PageValues` may be one of the most important feature in predicting a purchase conversion
+
+3. Many numeric features are right-skewed
 
 ## Imbalanced Dataset
 
