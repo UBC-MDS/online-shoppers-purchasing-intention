@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Model Tuning and Results &#8212; Online Shoppers Purchasing Intention</title>
+    <title>Model Tuning and Final Results &#8212; Online Shoppers Purchasing Intention</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -93,17 +93,17 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="data_analysis.html">
-   Data Analysis
+   Exploratory Data Analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="model_selection.html">
-   Model selection
+   Model Selection
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Model Tuning and Results
+   Model Tuning and Final Results
   </a>
  </li>
 </ul>
@@ -262,16 +262,16 @@
      </code>
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#randomized-search-cross-validation">
-     Randomized search cross validation
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#final-results-test-set">
-   Final results (test set)
+  <a class="reference internal nav-link" href="#randomized-search">
+   Randomized search
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#final-test-set-results">
+   Final test set results
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -291,6 +291,11 @@
    Discussion of results
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   Conclusion
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -302,74 +307,132 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="model-tuning-and-results">
-<h1>Model Tuning and Results<a class="headerlink" href="#model-tuning-and-results" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="model-tuning-and-final-results">
+<h1>Model Tuning and Final Results<a class="headerlink" href="#model-tuning-and-final-results" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="hyperparameter-tuning">
 <h2>Hyperparameter tuning<a class="headerlink" href="#hyperparameter-tuning" title="Permalink to this headline">¶</a></h2>
-<p>We tuned the following hyperparameters of the Random Forest classifier:</p>
+<p>As noted in our Model Selection discussion, we have decided to tune the hyperparameters of a Random Forest classifer further.  Specifically, we tuned the following list of hyperparameters:</p>
 <div class="section" id="n-estimators">
 <h3><code class="docutils literal notranslate"><span class="pre">n_estimators</span></code><a class="headerlink" href="#n-estimators" title="Permalink to this headline">¶</a></h3>
-<p>This is the number of trees (models) to include in our forest (ensemble of models).  We note that a higher number of trees increases model complexity and can introduce overfitting.</p>
+<p>This hyperparameter controls the number of trees (models) included in the Random Forest.  We note that a higher number of trees increases model complexity and have a higher risk of overfitting.  We tested a values in the range of 100 to 1000 trees in tuning our model.</p>
 </div>
 <div class="section" id="criterion">
 <h3><code class="docutils literal notranslate"><span class="pre">criterion</span></code><a class="headerlink" href="#criterion" title="Permalink to this headline">¶</a></h3>
-<p>This is the function that is used to measure the quality of a split at a node in the tree.  <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> allows for either <code class="docutils literal notranslate"><span class="pre">gini</span></code> or <code class="docutils literal notranslate"><span class="pre">entropy</span></code> functions to be used.</p>
+<p>This hyperparameter controls the function that is used to measure the quality of a split at a node in a tree within the Random Forest.  <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> allows for either <code class="docutils literal notranslate"><span class="pre">gini</span></code> or <code class="docutils literal notranslate"><span class="pre">entropy</span></code> functions to be used.  We tested models with both these functions.</p>
 </div>
 <div class="section" id="max-depth">
 <h3><code class="docutils literal notranslate"><span class="pre">max_depth</span></code><a class="headerlink" href="#max-depth" title="Permalink to this headline">¶</a></h3>
-<p>This is the maximum depth of each tree in the forest.  Higher values increase model complexity and can introduce overfitting.</p>
+<p>This hyperparameter controls the maximum depth of each tree in the Random Forest.  We note that higher values increase model complexity and have a higher risk of overfitting.  We tested a range of values from 10 to 100, incremented in steps of 5, in tuning our model.</p>
 </div>
 <div class="section" id="max-features">
 <h3><code class="docutils literal notranslate"><span class="pre">max_features</span></code><a class="headerlink" href="#max-features" title="Permalink to this headline">¶</a></h3>
-<p>This is the number of features that are considered when making the best split at a node in the tree.  We used the following values:</p>
+<p>This is the number of features that are considered when making a split at a node in a tree in the Random Forest.  We tested the following values in our model tuning:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> which sets <code class="docutils literal notranslate"><span class="pre">max_features=sqrt(n_features)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">log2</span></code> which sets <code class="docutils literal notranslate"><span class="pre">max_features=log2(n_features)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auto</span></code> which sets <code class="docutils literal notranslate"><span class="pre">max_features=sqrt(n_features)</span></code>, the square root of the number of features.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log2</span></code> which sets <code class="docutils literal notranslate"><span class="pre">max_features=log2(n_features)</span></code>, log base 2 of the number of features.</p></li>
 </ul>
 </div>
 <div class="section" id="min-samples-split">
 <h3><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code><a class="headerlink" href="#min-samples-split" title="Permalink to this headline">¶</a></h3>
-<p>This is the minimum number of samples required to split an internal node of the tree.</p>
+<p>This is the minimum number of samples required to split an internal node of the tree.  We tested the values 2, 4, and 8 in our hyperparameter tuning.</p>
 </div>
 <div class="section" id="min-samples-leaf">
 <h3><code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code><a class="headerlink" href="#min-samples-leaf" title="Permalink to this headline">¶</a></h3>
-<p>This is the minimum number of samples required to be at a leaf node.</p>
+<p>This is the minimum number of samples required to be at a leaf node.  We tested the values 1, 2, and 4 in our hyperparameter tuning.</p>
 </div>
 <div class="section" id="class-weight">
 <h3><code class="docutils literal notranslate"><span class="pre">class_weight</span></code><a class="headerlink" href="#class-weight" title="Permalink to this headline">¶</a></h3>
-<p>This hyperparameter can be used to deal with the imbalance in our training data.  Specifically, this hyper parameter controls the weights associated with each class.  We tested <code class="docutils literal notranslate"><span class="pre">balanced</span></code> which uses the values of our target label to automatically adjust weights inversely proportional to class frequencies as <code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">/</span> <span class="pre">(n_classes</span> <span class="pre">*</span> <span class="pre">np.bincount(y))</span></code></p>
-<p>For a full list of hyperparameters please see sk-learn’s <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">documentation</a>.</p>
-</div>
-<div class="section" id="randomized-search-cross-validation">
-<h3>Randomized search cross validation<a class="headerlink" href="#randomized-search-cross-validation" title="Permalink to this headline">¶</a></h3>
-<p>In order to tune the hyperparameters of our model we used randomized search cross validation.  We set a budget of 100 models to train.</p>
+<p>This hyperparameter can be used to deal with the imbalance in our training data.  Specifically, this hyper parameter controls the weights associated with each class.  We tested <code class="docutils literal notranslate"><span class="pre">balanced</span></code> which uses the values of our target label to automatically adjust weights inversely proportional to class frequencies as <code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">/</span> <span class="pre">(n_classes</span> <span class="pre">*</span> <span class="pre">np.bincount(y))</span></code>.  We also considered a value of <code class="docutils literal notranslate"><span class="pre">None</span></code>, which does not adjust class weights.</p>
+<p>Please note that this is not a full list of the hyperparameters available for tuning in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.  For the full list, please see the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">documentation</a>.</p>
 </div>
 </div>
-<div class="section" id="final-results-test-set">
-<h2>Final results (test set)<a class="headerlink" href="#final-results-test-set" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="randomized-search">
+<h2>Randomized search<a class="headerlink" href="#randomized-search" title="Permalink to this headline">¶</a></h2>
+<p>In order to tune the hyperparameters of our model we used randomized search cross validation, which is implemented in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> with <code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code>.  We set a budget of 100 models to train.  Based on this random search, we found that the following hyperparameters worked the best for our model, in the sense that they obtained the highest recall score of 0.81.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+#T_cb64d_ td:hover {
+  background-color: #ffffb3;
+}
+#T_cb64d_ .index_name {
+  font-style: italic;
+  color: darkgrey;
+  font-weight: normal;
+}
+#T_cb64d_ th:not(.index_name) {
+  background-color: #000066;
+  color: white;
+}
+</style>
+<table id="T_cb64d_">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_cb64d_level0_row0" class="row_heading level0 row0" >class_weight</th>
+      <td id="T_cb64d_row0_col0" class="data row0 col0" >balanced</td>
+    </tr>
+    <tr>
+      <th id="T_cb64d_level0_row1" class="row_heading level0 row1" >criterion</th>
+      <td id="T_cb64d_row1_col0" class="data row1 col0" >entropy</td>
+    </tr>
+    <tr>
+      <th id="T_cb64d_level0_row2" class="row_heading level0 row2" >max_depth</th>
+      <td id="T_cb64d_row2_col0" class="data row2 col0" >10</td>
+    </tr>
+    <tr>
+      <th id="T_cb64d_level0_row3" class="row_heading level0 row3" >max_features</th>
+      <td id="T_cb64d_row3_col0" class="data row3 col0" >log2</td>
+    </tr>
+    <tr>
+      <th id="T_cb64d_level0_row4" class="row_heading level0 row4" >min_samples_leaf</th>
+      <td id="T_cb64d_row4_col0" class="data row4 col0" >4</td>
+    </tr>
+    <tr>
+      <th id="T_cb64d_level0_row5" class="row_heading level0 row5" >min_samples_split</th>
+      <td id="T_cb64d_row5_col0" class="data row5 col0" >4</td>
+    </tr>
+    <tr>
+      <th id="T_cb64d_level0_row6" class="row_heading level0 row6" >n_estimators</th>
+      <td id="T_cb64d_row6_col0" class="data row6 col0" >892</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="final-test-set-results">
+<h2>Final test set results<a class="headerlink" href="#final-test-set-results" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we used our tuned Random Forest model to make predictions on the test set.  In order to analyze how well our model did, we have included a confusion matrix and classification report below.</p>
 <div class="section" id="confusion-matrix">
 <h3>Confusion matrix<a class="headerlink" href="#confusion-matrix" title="Permalink to this headline">¶</a></h3>
 <p><img alt="RandomForestFinal" src="_images/final_cm.png" /></p>
+<p>Fig.7 - Final confusion matrix with tuned random forest model</p>
 </div>
 <div class="section" id="classification-report">
 <h3>Classification report<a class="headerlink" href="#classification-report" title="Permalink to this headline">¶</a></h3>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_e42ac_ td:hover {
+#T_e16f5_ td:hover {
   background-color: #ffffb3;
 }
-#T_e42ac_ .index_name {
+#T_e16f5_ .index_name {
   font-style: italic;
   color: darkgrey;
   font-weight: normal;
 }
-#T_e42ac_ th:not(.index_name) {
+#T_e16f5_ th:not(.index_name) {
   background-color: #000066;
   color: white;
 }
 </style>
-<table id="T_e42ac_">
+<table id="T_e16f5_">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
@@ -381,55 +444,60 @@
   </thead>
   <tbody>
     <tr>
-      <th id="T_e42ac_level0_row0" class="row_heading level0 row0" >No Purchase</th>
-      <td id="T_e42ac_row0_col0" class="data row0 col0" >0.954</td>
-      <td id="T_e42ac_row0_col1" class="data row0 col1" >0.870</td>
-      <td id="T_e42ac_row0_col2" class="data row0 col2" >0.910</td>
-      <td id="T_e42ac_row0_col3" class="data row0 col3" >2058.000</td>
+      <th id="T_e16f5_level0_row0" class="row_heading level0 row0" >No Purchase</th>
+      <td id="T_e16f5_row0_col0" class="data row0 col0" >0.954</td>
+      <td id="T_e16f5_row0_col1" class="data row0 col1" >0.870</td>
+      <td id="T_e16f5_row0_col2" class="data row0 col2" >0.910</td>
+      <td id="T_e16f5_row0_col3" class="data row0 col3" >2058.000</td>
     </tr>
     <tr>
-      <th id="T_e42ac_level0_row1" class="row_heading level0 row1" >Purchase</th>
-      <td id="T_e42ac_row1_col0" class="data row1 col0" >0.545</td>
-      <td id="T_e42ac_row1_col1" class="data row1 col1" >0.787</td>
-      <td id="T_e42ac_row1_col2" class="data row1 col2" >0.644</td>
-      <td id="T_e42ac_row1_col3" class="data row1 col3" >408.000</td>
+      <th id="T_e16f5_level0_row1" class="row_heading level0 row1" >Purchase</th>
+      <td id="T_e16f5_row1_col0" class="data row1 col0" >0.546</td>
+      <td id="T_e16f5_row1_col1" class="data row1 col1" >0.787</td>
+      <td id="T_e16f5_row1_col2" class="data row1 col2" >0.645</td>
+      <td id="T_e16f5_row1_col3" class="data row1 col3" >408.000</td>
     </tr>
     <tr>
-      <th id="T_e42ac_level0_row2" class="row_heading level0 row2" >accuracy</th>
-      <td id="T_e42ac_row2_col0" class="data row2 col0" >0.856</td>
-      <td id="T_e42ac_row2_col1" class="data row2 col1" >0.856</td>
-      <td id="T_e42ac_row2_col2" class="data row2 col2" >0.856</td>
-      <td id="T_e42ac_row2_col3" class="data row2 col3" >0.856</td>
+      <th id="T_e16f5_level0_row2" class="row_heading level0 row2" >accuracy</th>
+      <td id="T_e16f5_row2_col0" class="data row2 col0" >0.856</td>
+      <td id="T_e16f5_row2_col1" class="data row2 col1" >0.856</td>
+      <td id="T_e16f5_row2_col2" class="data row2 col2" >0.856</td>
+      <td id="T_e16f5_row2_col3" class="data row2 col3" >0.856</td>
     </tr>
     <tr>
-      <th id="T_e42ac_level0_row3" class="row_heading level0 row3" >macro avg</th>
-      <td id="T_e42ac_row3_col0" class="data row3 col0" >0.749</td>
-      <td id="T_e42ac_row3_col1" class="data row3 col1" >0.828</td>
-      <td id="T_e42ac_row3_col2" class="data row3 col2" >0.777</td>
-      <td id="T_e42ac_row3_col3" class="data row3 col3" >2466.000</td>
+      <th id="T_e16f5_level0_row3" class="row_heading level0 row3" >macro avg</th>
+      <td id="T_e16f5_row3_col0" class="data row3 col0" >0.750</td>
+      <td id="T_e16f5_row3_col1" class="data row3 col1" >0.829</td>
+      <td id="T_e16f5_row3_col2" class="data row3 col2" >0.777</td>
+      <td id="T_e16f5_row3_col3" class="data row3 col3" >2466.000</td>
     </tr>
     <tr>
-      <th id="T_e42ac_level0_row4" class="row_heading level0 row4" >weighted avg</th>
-      <td id="T_e42ac_row4_col0" class="data row4 col0" >0.886</td>
-      <td id="T_e42ac_row4_col1" class="data row4 col1" >0.856</td>
-      <td id="T_e42ac_row4_col2" class="data row4 col2" >0.866</td>
-      <td id="T_e42ac_row4_col3" class="data row4 col3" >2466.000</td>
+      <th id="T_e16f5_level0_row4" class="row_heading level0 row4" >weighted avg</th>
+      <td id="T_e16f5_row4_col0" class="data row4 col0" >0.886</td>
+      <td id="T_e16f5_row4_col1" class="data row4 col1" >0.856</td>
+      <td id="T_e16f5_row4_col2" class="data row4 col2" >0.866</td>
+      <td id="T_e16f5_row4_col3" class="data row4 col3" >2466.000</td>
     </tr>
   </tbody>
 </table>
 </div></div>
 </div>
+<p>Table.3 - Evaluation metrics for tuned random forest model</p>
 </div>
 </div>
 <div class="section" id="discussion-of-results">
 <h2>Discussion of results<a class="headerlink" href="#discussion-of-results" title="Permalink to this headline">¶</a></h2>
-<p>Our tuned random forest has the following results on the test set:</p>
+<p>Based of Figure 7 and Table 3 we note that our tuned Random Forest obtained the following results on the test set:</p>
 <ul class="simple">
-<li><p>X true positives, and X true negatives</p></li>
-<li><p>268 false positives, and 88 false negatives</p></li>
-<li><p>A macro average recall score is 0.829 and the macro average precision score is 0.750</p></li>
+<li><p>1790 true positives, and 321 true negatives</p></li>
+<li><p>268 false positives, and 87 false negatives</p></li>
+<li><p>A macro average recall score is 0.830 and the macro average precision score is 0.751</p></li>
 <li><p>The macro average precision score is above our budget of 0.60 that we set at the beginning of our project</p></li>
 </ul>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>We have demonstrated that it is feasible to create a machine learning model to predict purchase conversion using session data in an e-commerce setting. Even though the features in the dataset are high level and aggregated, we are still able to find signals that can help with our prediction problem. Performance may be improved with more granular dataset, such as individual page history data of a user in a session. Deploying a real-time machine learning model for this use case may be challenging. Hence, we recommend to start with simple rule-based triggers on important features like <code class="docutils literal notranslate"><span class="pre">PageValues</span></code> and <code class="docutils literal notranslate"><span class="pre">BounceRates</span></code> as an ‘early win’, before transitioning to a machine learning model to futher boost conversion rate.</p>
 </div>
 </div>
 

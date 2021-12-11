@@ -1,5 +1,11 @@
 # Introduction
 
+Authors: Nico Van den Hooff, Ting Zhe (TZ) Yan, Arijeet Chatterjee
+
+## Abstract
+
+Our project is focused on applying Machine Learning classification models to e-commerce website data.  Specifically, we analyze if machine learning is an effective method in predicting whether or not a visitor to an e-commerce website will make a purchase or not.  We performed exploratory data analysis in order to visually analyze our data and identify any patterns or trends.  We then performed model selection, testing a selection of 4 classification models against a base model.  Our main metric in assessing our models was recall.  In model selection we determined that the model that appeared to be the best suited to answer our research question was a Random Forest classifier.  We tuned the hyperparameters of this model further, and obtained a final recall score of 0.81 on our test set.  Ultimately, we concluded that it is feasible to create a machine learning model to predict purchase conversion for an e-commerce website, however, before an organization commits to implementing a machine learning model, we would recommend more simple methods be considered first.
+
 ## Research question
 
 The research question that we are attempting to answer with our analysis is a predictive question, and is stated as follows:
@@ -26,7 +32,7 @@ The target feature and class label in the dataset is called `Revenue` and contai
 
 The dataset has good data quality in general. It is in a tidy format {cite}`wickham2014tidy`, and does not contain `NULL` values. There are some minor issues with outliers, but we have decided not to handle them.
 
-Feature engineering is done to capture feature interactions, and aggregating common features. The table below list some of our new features:
+Feature engineering is done to capture feature interactions, and aggregating common features. In particular, we want to capture possible feature interactions with `PageValues`, which we think is important for this problem. Table 1 list some of our new features:
 
 | Feature Name          |      Description      |
 |-----------------------|-----------------------|
@@ -38,6 +44,8 @@ Feature engineering is done to capture feature interactions, and aggregating com
 | `page_values_x_bounce_rate`| `PageValues` $\times$ (1 - `BounceRates`) |
 | `page_values_per_product_view`| `PageValues` per `ProductRelated` page views |
 | `page_values_per_product_dur`| `PageValues` per `ProductRelated` page durations |
+<figcaption align = "center"><b>Table.1 - New features generated</b></figcaption>
+
 ## Bibliography
 
 ```{bibliography}

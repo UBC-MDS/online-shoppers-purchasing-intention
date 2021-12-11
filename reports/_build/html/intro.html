@@ -53,7 +53,7 @@
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data Analysis" href="data_analysis.html" />
+    <link rel="next" title="Exploratory Data Analysis" href="data_analysis.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -95,17 +95,17 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="data_analysis.html">
-   Data Analysis
+   Exploratory Data Analysis
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="model_selection.html">
-   Model selection
+   Model Selection
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="model_tuning_results.html">
-   Model Tuning and Results
+   Model Tuning and Final Results
   </a>
  </li>
 </ul>
@@ -180,6 +180,11 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#abstract">
+   Abstract
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#research-question">
    Research question
   </a>
@@ -212,6 +217,11 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Authors: Nico Van den Hooff, Ting Zhe (TZ) Yan, Arijeet Chatterjee</p>
+<div class="section" id="abstract">
+<h2>Abstract<a class="headerlink" href="#abstract" title="Permalink to this headline">¶</a></h2>
+<p>Our project is focused on applying Machine Learning classification models to e-commerce website data.  Specifically, we analyze if machine learning is an effective method in predicting whether or not a visitor to an e-commerce website will make a purchase or not.  We performed exploratory data analysis in order to visually analyze our data and identify any patterns or trends.  We then performed model selection, testing a selection of 4 classification models against a base model.  Our main metric in assessing our models was recall.  In model selection we determined that the model that appeared to be the best suited to answer our research question was a Random Forest classifier.  We tuned the hyperparameters of this model further, and obtained a final recall score of 0.81 on our test set.  Ultimately, we concluded that it is feasible to create a machine learning model to predict purchase conversion for an e-commerce website, however, before an organization commits to implementing a machine learning model, we would recommend more simple methods be considered first.</p>
+</div>
 <div class="section" id="research-question">
 <h2>Research question<a class="headerlink" href="#research-question" title="Permalink to this headline">¶</a></h2>
 <p>The research question that we are attempting to answer with our analysis is a predictive question, and is stated as follows:</p>
@@ -236,7 +246,7 @@
 <div class="section" id="data-cleaning-feature-engineering">
 <h2>Data Cleaning &amp; Feature Engineering<a class="headerlink" href="#data-cleaning-feature-engineering" title="Permalink to this headline">¶</a></h2>
 <p>The dataset has good data quality in general. It is in a tidy format <span id="id2">[<a class="reference internal" href="#id5">Wickham, 2014</a>]</span>, and does not contain <code class="docutils literal notranslate"><span class="pre">NULL</span></code> values. There are some minor issues with outliers, but we have decided not to handle them.</p>
-<p>Feature engineering is done to capture feature interactions, and aggregating common features. The table below list some of our new features:</p>
+<p>Feature engineering is done to capture feature interactions, and aggregating common features. In particular, we want to capture possible feature interactions with <code class="docutils literal notranslate"><span class="pre">PageValues</span></code>, which we think is important for this problem. Table 1 list some of our new features:</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Feature Name</p></th>
@@ -270,6 +280,7 @@
 </tr>
 </tbody>
 </table>
+<figcaption align = "center"><b>Table.1 - New features generated</b></figcaption>
 </div>
 <div class="section" id="bibliography">
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h2>
@@ -318,7 +329,7 @@
     <a class='right-next' id="next-link" href="data_analysis.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data Analysis</p>
+        <p class="prev-next-title">Exploratory Data Analysis</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

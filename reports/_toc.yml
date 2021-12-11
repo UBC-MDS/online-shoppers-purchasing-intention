@@ -4,5 +4,8 @@ format: jb-book
 root: intro
 chapters:
 - file: data_analysis
+  title: Exploratory Data Analysis
 - file: model_selection
+  title: Model Selection
 - file: model_tuning_results
+  title: Model Tuning and Final Results
