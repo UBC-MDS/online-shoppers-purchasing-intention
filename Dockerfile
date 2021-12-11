@@ -1,7 +1,7 @@
 # Docker file for the online shoppers purchasing intention project
 # Authors: Nico Van den Hooff, TZ Yan, Arijeet Chatterjee
 # Created: 2021-12-07
-# Last updated: 2021-12-07
+# Last updated: 2021-12-10
 
 # base container for dockerfile
 FROM continuumio/miniconda3@sha256:92d7896124d940cb1815d3b59d8eaab9a8e86c801af2437658581465044b0a06
