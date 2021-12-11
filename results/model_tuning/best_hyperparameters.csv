@@ -1,0 +1,8 @@
+,value
+class_weight,balanced
+criterion,entropy
+max_depth,10
+max_features,log2
+min_samples_leaf,4
+min_samples_split,4
+n_estimators,892

@@ -41,10 +41,10 @@ To replicate our analysis, you will first need to clone our repo.  You can do so
 
 ```bash
 # clone our repo
-$ git clone https://github.com/UBC-MDS/online-shoppers-purchasing-intention.git
+git clone https://github.com/UBC-MDS/online-shoppers-purchasing-intention.git
 
 # change working directory to our repos root directory
-$ cd online-shoppers-purchasing-intention
+cd online-shoppers-purchasing-intention
 ```
 
 You can automatically replicate our analysis by using one of the following two methods:
@@ -56,13 +56,13 @@ First, install [Docker](https://www.docker.com/get-started).
 Then, run the following command to reset our repository to a clean state, with no intermediate or results files:
 
 ```bash
-$ docker run --rm -v /$(pwd):/home/online-shoppers-purchasing-intention nicovandenhooff/online-shoppers-purchasing-intention make -C /home/online-shoppers-purchasing-intention clean
+docker run --rm -v /$(pwd):/home/analysis nicovandenhooff/online-shoppers-purchasing-intention:latest make -C /home/analysis clean
 ```
 
 Finally, run the following command to replicate our analysis (note: this will take some time):
 
 ```bash
-$ docker run --rm -v /$(pwd):/home/online-shoppers-purchasing-intention nicovandenhooff/online-shoppers-purchasing-intention make -C /home/online-shoppers-purchasing-intention all
+docker run --rm -v /$(pwd):/home/analysis nicovandenhooff/online-shoppers-purchasing-intention:latest make -C /home/analysis all
 ```
 
 ### Method 2: Without using Docker
@@ -70,20 +70,20 @@ $ docker run --rm -v /$(pwd):/home/online-shoppers-purchasing-intention nicovand
 First, create and activate the required virtual environment with conda at the command line as follows:
 
 ```bash
-$ conda env create -f environment.yaml
-$ conda activate project_env
+conda env create -f environment.yaml
+conda activate project_env
 ```
 
 Then, run the following command at the command line (terminal) to reset our repository to a clean state, with no intermediate or results files:
 
 ```bash
-$ make clean
+make clean
 ```
 
 Finally, run the following command to replicate our analysis (note: this will take some time):
 
 ```bash
-$ make all
+make all
 ```
 
 ## Makefile dependency graph

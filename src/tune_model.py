@@ -26,78 +26,10 @@ from model_selection import read_cleaned_data, get_X_y
 from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import make_pipeline
+from model_selection import get_transformer, get_feat_type
 
 
 opt = docopt(__doc__)
-
-
-def get_feat_type():
-    """Gets the feature types
-
-    Returns
-    -------
-    dict
-        Dictionary of feature types
-    """
-    # Dictionary of features type for transformation
-    feat_type = {
-        "numeric": [
-            "Administrative",
-            "Administrative_Duration",
-            "Informational",
-            "Informational_Duration",
-            "ProductRelated",
-            "ProductRelated_Duration",
-            "BounceRates",
-            "ExitRates",
-            "PageValues",
-            "SpecialDay",
-            "total_page_view",
-            "total_duration",
-            "product_view_percent",
-            "product_dur_percent",
-            "ave_product_duration",
-            "page_values_x_bounce_rate",
-            "page_values_per_product_view",
-            "page_values_per_product_dur",
-        ],
-        "category": [
-            "OperatingSystems",
-            "Browser",
-            "Region",
-            "TrafficType",
-            "VisitorType",
-        ],
-        "binary": ["Weekend"],
-        "drop": ["Month"],
-        "target": ["Revenue"],
-    }
-
-    return feat_type
-
-
-def get_transformer():
-    """Get Column Transformer for feature transformation
-
-    Returns
-    -------
-    ColumnTransformer
-        Returns a ColumnTransformer object
-    """
-    feat_type = get_feat_type()
-
-    ct = make_column_transformer(
-        (StandardScaler(), feat_type["numeric"]),
-        (OneHotEncoder(sparse=False, handle_unknown="ignore"), feat_type["category"]),
-        (
-            OneHotEncoder(sparse=False, drop="if_binary", handle_unknown="ignore"),
-            feat_type["binary"],
-        ),
-        ("drop", feat_type["drop"]),
-        remainder="passthrough",
-    )
-
-    return ct
 
 
 def create_model_and_params():
@@ -253,12 +185,29 @@ def main(data_path, output_path):
     random_search = perform_random_search(X_train, y_train, model, search_space)
     results = get_search_results(random_search)
 
+    best_hyper_params = results["best_params"]
+
+    # cleans up for indices in dataframe
+    index = []
+    for key in best_hyper_params.keys():
+        index.append(key[24:])
+
+    best_hyper_params_df = pd.DataFrame(
+        data=best_hyper_params.values(),
+        index=index,
+        columns=["value"],
+    )
+
+    best_recall = results["best_score"]
+    print(f"-- Search complete, best recall score: {best_recall}")
+
     print("-- Getting final predictions")
     cm_plot, cr_df = get_final_predictions(
         results["best_estimator"], X_train, y_train, X_test, y_test
     )
 
     print("-- Output results and images")
+    best_hyper_params_df.to_csv((f"{output_path}best_hyperparameters.csv"))
     cr_df.to_csv(f"{output_path}classification_report.csv")
     cm_plot.savefig(f"{output_path}final_cm.png", bbox_inches="tight")
 

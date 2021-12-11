@@ -1,7 +1,10 @@
-# Online Shoppers Purchasing Intention
-Nico Van den Hooff, Ting Zhe (TZ) Yan, Arijeet Chatterjee
-
 # Introduction
+
+Authors: Nico Van den Hooff, Ting Zhe (TZ) Yan, Arijeet Chatterjee
+
+## Abstract
+
+Our project is focused on applying Machine Learning classification models to e-commerce website data.  Specifically, we analyze if machine learning is an effective method in predicting whether or not a visitor to an e-commerce website will make a purchase or not.  We performed exploratory data analysis in order to visually analyze our data and identify any patterns or trends.  We then performed model selection, testing a selection of 4 classification models against a base model.  Our main metric in assessing our models was recall.  In model selection we determined that the model that appeared to be the best suited to answer our research question was a Random Forest classifier.  We tuned the hyperparameters of this model further, and obtained a final recall score of 0.81 on our test set.  Ultimately, we concluded that it is feasible to create a machine learning model to predict purchase conversion for an e-commerce website, however, before an organization commits to implementing a machine learning model, we would recommend more simple methods be considered first.
 
 ## Research question
 

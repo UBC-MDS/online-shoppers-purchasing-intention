@@ -160,13 +160,13 @@ def get_models():
     ct = get_transformer()
 
     models = {
-        "DummyClassifier": make_pipeline(ct, DummyClassifier()),
+        "Dummy": make_pipeline(ct, DummyClassifier()),
         "LogisticRegression": make_pipeline(
             ct, LogisticRegression(max_iter=1500)
         ),  # helps convergence
         "SVC": make_pipeline(ct, SVC(probability=True)),
         "RandomForest": make_pipeline(ct, RandomForestClassifier()),
-        "XGBoost": make_pipeline(
+        "XGB": make_pipeline(
             ct, xgb.XGBClassifier(use_label_encoder=False, eval_metric="logloss")
         ),
     }
@@ -210,7 +210,7 @@ def cross_validate_models(
     X_train,
     y_train,
     cv=5,
-    metrics=["accuracy", "precision", "recall", "f1", "average_precision"],
+    metrics=["accuracy", "precision", "recall", "f1"],
 ):
     """Performs cross validation for a set of models and returns results.
 
@@ -272,7 +272,7 @@ def get_confusion_matrices(models, X_train, y_train):
 
     for (name, model), ax in zip(models.items(), axes):
 
-        if name == "DummyClassifier":
+        if name == "Dummy":
             continue
 
         else:
@@ -313,7 +313,7 @@ def get_precision_recall_curves(models, X_train, y_train):
 
     for name, model in models.items():
 
-        if name == "DummyClassifier":
+        if name == "Dummy":
             continue
 
         else:
