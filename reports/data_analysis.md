@@ -1,6 +1,6 @@
-# Data Analysis
+# Exploratory Data Analysis
 
-The data consists of numeric and categorical features. Amongst these features, "BounceRates", "ExitRates" and "PageValues" features represent the metrics measured by "Google Analytics" for each session on the e-commerce site. The key observations from our data analysis are:
+Our dataset consists of numeric and categorical features. Amongst these features, the "BounceRates", "ExitRates" and "PageValues" features represent the metrics measured by "Google Analytics" for each session on the e-commerce site. The key observations from our data analysis are:
 
 1. Our dataset is imbalanced, where only 15% of sessions ended in a purchase
 
@@ -27,9 +27,9 @@ This dataset is imbalanced, where only 15% of sessions ended in a purchase. Whil
 ![correlation_plot](images/chart_correlation.png)
 <figcaption align = "left"><b>Fig.3 - Correlation plot for numeric features</b></figcaption>
 
-Based on the above insight on `PageValues`, we looked at the correlation between numeric features to find whether other features are strongly correlated with `PageValues`. 
+Based on the above insight on `PageValues`, we looked at the correlation between numeric features to find whether other features are strongly correlated with `PageValues`.
 
-We see that higher pageview and longer browsing duration have a positive correlation with `PageValues`. This is intuitive, as higher pageview and longer browsing duration indicate high engagement from the user. For example, if a user already had an item in mind, they might spend more time on an e-commerce website to compare prices reviews of similar products. A highly engaged user will be more likely to purchase than a passive user.
+We see that a higher pageview value and a longer browsing duration are positively correlated with `PageValues`. This is intuitive, as a higher pageview and a longer browsing duration would indicate a high level of engagement from the user. For example, if a user already had an item in mind, they might spend more time on an e-commerce website to compare prices reviews of similar products. A highly engaged user will be more likely to purchase than a passive user.
 
 Another feature of interest is `ExitRates`, which is negatively correlated with `PageValues`. `ExitRates` is defined as the average exit rate of the pages visited by the user. `ExitRates` is also positively correlated with `BounceRates`. This finding fits well in our 'engaged user' hypothesis: sessions with high `ExitRates` or `BounceRates` indicate a less engaged user, resulting in fewer purchase conversions.
 
